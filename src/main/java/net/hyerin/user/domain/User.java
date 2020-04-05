@@ -6,14 +6,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.AccessLevel;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 @Builder
 @Getter
-@AllArgsConstructor
-
-// TODO JPA Hibernate가 객체를 생성하기 위해 필요한 기본 생성자 설정
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+// JPA Hibernate가 객체를 생성하기 위해 필요한 기본 생성자 설정
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 

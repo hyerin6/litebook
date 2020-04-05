@@ -11,7 +11,7 @@
     <meta charset="utf-8">
     <!--  This file has been downloaded from https://bootdey.com  -->
     <!--  All snippets are MIT license https://bootdey.com/license -->
-    <title>signin</title>
+    <title>lite book</title>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -27,14 +27,17 @@
         <br/><br/>
 
         <div class="loginbox-textbox">
+            <label>Email</label>
             <input type="text" class="form-control" placeholder="Email">
         </div>
         <div class="loginbox-textbox">
+            <label>Password</label>
             <input type="text" class="form-control" placeholder="Password">
         </div>
         <div class="loginbox-forgot">
             <a href="">Forgot Password?</a>
         </div>
+        <br/>
         <div class="loginbox-submit">
             <input type="button" class="btn btn-primary btn-block" value="Login">
         </div>

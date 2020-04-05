@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import net.hyerin.user.domain.Role;
 import net.hyerin.user.domain.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +16,8 @@ import javax.validation.constraints.Size;
 
 @Builder
 @Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserSignupDto {
 
     @NotBlank(message = "이메일은 필수 입력 항목입니다.")
@@ -26,7 +28,6 @@ public class UserSignupDto {
     @Size(min=6, max=12, message="6 자리 이상 12 자리 이하이어야 합니다.")
     private String password1;
 
-    @NotBlank(message="비밀번호를 한번 더 입력하세요")
     private String password2;
 
     @NotBlank(message = "닉네임은 필수 입력 항목입니다.")
@@ -38,6 +39,7 @@ public class UserSignupDto {
 
     private String profile;
 
+    // 팩토리 메소드에 대한 설명 -> https://hyerin6.github.io/2020-04-05/0405/
     public User toEntityWithPasswordEncoder(PasswordEncoder passwordEncoder) {
         return User.builder()
                 .email(email)
