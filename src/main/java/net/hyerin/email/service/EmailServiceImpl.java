@@ -1,5 +1,6 @@
 package net.hyerin.email.service;
 
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -8,53 +9,58 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.mail.MessagingException;
+import javax.mail.SendFailedException;
 import javax.mail.internet.MimeMessage;
+import java.time.Duration;
 
 @Slf4j
 @Service("emailService")
 public class EmailServiceImpl implements EmailService {
 
-    private static final String SENDER = "litebook.official@gmail.com";
+    @Value("${spring.mail.username}")
+    private String SENDER;
 
-    @Autowired
     private JavaMailSender javaMailSender;
 
-    @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    @Override
-    public void sendMail(String email) {
-        MimeMessage msg = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper;
-        try {
-            // 메일 전송
-            String code = generateVerificationCode();
-            helper = new MimeMessageHelper(msg, false, "UTF-8");
-            helper.setFrom(SENDER);
-            helper.setTo(email);
-            helper.setSubject("[litebook] 이메일 인증");
-            helper.setText(generateVerificationText(email, code), true);
-            javaMailSender.send(msg);
+    @Autowired
+    public EmailServiceImpl(JavaMailSender javaMailSender, RedisTemplate<String, String> redisTemplate){
+        this.javaMailSender = javaMailSender;
+        this.redisTemplate = redisTemplate;
+    }
 
-            // <이메일, 인증코드> 레디스에 저장
-            redisTemplate.opsForValue().set(email, code);
-        } catch(Exception e){
-            log.error(e.getMessage());
-        }
+    @Override
+    public void sendMail(String email) throws Exception {
+        MimeMessage msg = javaMailSender.createMimeMessage();
+
+        // 메일 전송
+        String code = generateVerificationCode();
+        MimeMessageHelper helper = new MimeMessageHelper(msg, false, "UTF-8");
+        helper.setFrom(SENDER);
+        helper.setTo(email);
+        helper.setSubject("[litebook] 이메일 인증");
+        helper.setText(generateVerificationText(email, code), true);
+
+        javaMailSender.send(msg);
+
+        // <이메일, 인증코드> 레디스에 저장
+        redisTemplate.opsForValue().set(email, code, Duration.ofDays(1));
     }
 
     @Override
     public boolean isMatchVerifyCode(String email, String code) {
-        if(code.equals(redisTemplate.opsForValue().get(email)))
-            return true;
-        return false;
+        return code.equals(redisTemplate.opsForValue().get(email));
     }
 
-    private static String generateVerificationCode() { // 6자리 인증 코드 생성
+    @Override
+    public String generateVerificationCode() { // 6자리 인증 코드 생성
         return Integer.toString((int)(Math.random() * 899999) + 100000);
     }
 
-    private static String generateVerificationText(String email, String code){
+    @Override
+    public String generateVerificationText(String email, String code){
         return "<html><body><p2>인증을 위해 아래 링크를 클릭해 주세요.</p2>" +
                 "<p>이메일 인증 후 로그인이 가능합니다.</p>" +
                 "<a href='http://localhost:8080/users/email/verify?email=" + email +
