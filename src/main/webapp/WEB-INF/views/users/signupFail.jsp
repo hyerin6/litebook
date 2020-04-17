@@ -9,6 +9,7 @@
 <body>
 <script type="text/javascript">
     alert('이메일 전송에 실패했습니다. 다시 확인해주세요.');
+    window.close();
 </script>
 </body>
 </html>
