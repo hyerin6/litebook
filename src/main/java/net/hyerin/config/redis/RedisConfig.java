@@ -1,5 +1,6 @@
 package net.hyerin.config.redis;
 
+import net.hyerin.user.domain.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

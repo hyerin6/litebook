@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.mail.MessagingException;
+
 @Slf4j
 @Controller
 @RequestMapping("/test")
@@ -40,7 +42,7 @@ public class TestController {
 
     // 이메일 전송 테스트를 위한 메소드
     @GetMapping("email")
-    public String emailSend(){
+    public String emailSend() throws Exception {
         emailService.sendMail("hyerinn6@gmail.com");
         return "users/signupSuccess";
     }

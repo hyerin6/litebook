@@ -1,22 +1,20 @@
 package net.hyerin.user.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.AccessLevel;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 // JPA Hibernate가 객체를 생성하기 위해 필요한 기본 생성자 설정
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
