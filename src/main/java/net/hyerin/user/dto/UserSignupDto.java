@@ -1,10 +1,6 @@
 package net.hyerin.user.dto;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.hyerin.user.domain.Role;
 import net.hyerin.user.domain.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +12,7 @@ import javax.validation.constraints.Size;
 
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserSignupDto {
@@ -34,7 +31,6 @@ public class UserSignupDto {
     @Size(min=2, max=30)
     private String name;
 
-    @Pattern(regexp = "[0-9]{10,11}", message = "10-11자리의 숫자만 입력가능합니다.")
     private String phone;
 
     private String profile;

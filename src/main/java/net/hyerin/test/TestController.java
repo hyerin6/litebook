@@ -38,11 +38,4 @@ public class TestController {
         return "users/profile";
     }
 
-    // 이메일 전송 테스트를 위한 메소드
-    @GetMapping("email")
-    public String emailSend(){
-        emailService.sendMail("hyerinn6@gmail.com");
-        return "users/signupSuccess";
-    }
-
 }

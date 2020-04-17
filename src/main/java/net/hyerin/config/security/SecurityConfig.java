@@ -1,6 +1,6 @@
 package net.hyerin.config.security;
 
-import net.hyerin.user.service.MyAuthenticationProvider;
+import net.hyerin.user.security.MyAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,7 +40,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable();
 
-        // TODO JSP 구현 후 작성 예정
         http.formLogin()
                 .loginPage("/users/signin")
                 .loginProcessingUrl("/users/signin_processing")
@@ -61,4 +60,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
+
 }

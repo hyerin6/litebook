@@ -1,10 +1,6 @@
 package net.hyerin.user.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.AccessLevel;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +13,7 @@ import javax.persistence.Id;
 @Entity
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 // JPA Hibernate가 객체를 생성하기 위해 필요한 기본 생성자 설정
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
