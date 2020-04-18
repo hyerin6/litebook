@@ -44,9 +44,9 @@ public class UserController {
             userService.signup(userSignupDto);
         } catch (Exception e){
             log.error(e.toString());
-            return "redirect:signupFail";
+            return "users/signupFail";
         }
-        return "redirect:signupSuccess";
+        return "users/signupSuccess";
     }
 
     @RequestMapping(value = "signupSuccess", method = RequestMethod.GET)
@@ -58,7 +58,6 @@ public class UserController {
     public String signupFail() {
         return "users/signupFail";
     }
-
 
     @Transactional
     @RequestMapping(value = "email/verify", method = RequestMethod.GET)
@@ -87,12 +86,7 @@ public class UserController {
 
     @RequestMapping(value = "signin", method = RequestMethod.POST)
     public String signin(@Valid @ModelAttribute("userSigninDto") UserSigninDto userSigninDto,
-                         BindingResult bindingResult, Model model){
-        if (bindingResult.hasErrors()) {
-            return "users/signin";
-        }
-        User user = userService.signin(userSigninDto);
-        model.addAttribute("user", user);
+                         BindingResult bindingResult, Model model) {
         return "users/profile";
     }
 

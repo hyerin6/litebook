@@ -1,6 +1,7 @@
 package net.hyerin.config.security;
 
 import net.hyerin.user.security.MyAuthenticationProvider;
+import net.hyerin.user.security.MyAuthenticationFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     MyAuthenticationProvider myAuthenticationProvider;
+
+    @Autowired
+    MyAuthenticationFailureHandler myAuthenticationFailureHandler;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -43,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .loginPage("/users/signin")
                 .loginProcessingUrl("/users/signin_processing")
-                .failureUrl("/users/signin?error")
+                .failureHandler(myAuthenticationFailureHandler)
                 .defaultSuccessUrl("/users/profile", true)
                 .usernameParameter("email")
                 .passwordParameter("password");

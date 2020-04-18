@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void signup(UserSignupDto userSignupDto) throws Exception {
         User user = userSignupDto.toEntityWithPasswordEncoder(passwordEncoder);
         emailService.sendMail(user.getEmail());
@@ -46,16 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User signin(UserSigninDto userSigninDto) {
-        User user = userRepository.findOneByEmail(userSigninDto.getEmail());
-        if(user == null)
-            return null;
-        if(!passwordEncoder.matches(userSigninDto.getPassword(), user.getPassword()))
-            return null;
-        return user;
-    }
-
-    @Override
+    @Transactional
     public void updateUserType(String email){
         User user = userRepository.findOneByEmail(email);
         user.setUserType(IS_AUTHENTICATED_FULLY);

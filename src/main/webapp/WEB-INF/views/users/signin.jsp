@@ -24,7 +24,6 @@
             <div class="loginbox-textbox">
                 <form:label path="email">Email</form:label>
                 <form:input path="email" class="form-control" placeholder="Email" />
-                <form:errors path="email" class="error" />
             </div>
             <div class="loginbox-textbox">
                 <form:label path="password">Password</form:label>
@@ -41,10 +40,15 @@
             <div class="loginbox-signup">
                 <a href="#register.html">Sign Up With Email</a>
             </div>
+
             <c:if test="${ param.error != null }"> <div class="loginbox-title2" style="color: red">
-                아이디나 비밀번호가 맞지 않습니다. <br/>
-                다시 확인해주세요.
-            </div> </c:if>
+                <c:if test="${ param.error == '0' }"> 이메일 혹은 비밀번호 형식이 맞지 않습니다.  </c:if>
+                <c:if test="${ param.error == '1' }"> 이메일이 존재하지 않습니다. <br/> 회원가입 후 로그인하세요. </c:if>
+                <c:if test="${ param.error == '2' }"> 이메일 인증이 완료되지 않았습니다. <br/> 인증 기간이 만료되었다면 다시 회원가입하세요. </c:if>
+                <c:if test="${ param.error == '3' }"> 이메일 혹은 비밀번호가 일치하지 않습니다. </c:if>
+            </div>
+            </c:if>
+
         </form:form>
     </div>
 </div>

@@ -1,17 +1,16 @@
 package net.hyerin.user.security;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import net.hyerin.user.domain.Role;
+import net.hyerin.user.domain.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+import javax.persistence.ElementCollection;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -66,4 +65,14 @@ public class CustomUserDetails implements UserDetails {
         return false;
     }
 
+    public CustomUserDetails from(User user) {
+        return CustomUserDetails.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .enabled(user.isEnabled())
+                .userType(user.getUserType())
+                .roles(roles)
+                .build();
+    }
 }
