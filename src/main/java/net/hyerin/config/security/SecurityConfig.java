@@ -1,27 +1,42 @@
 package net.hyerin.config.security;
 
-import net.hyerin.user.security.MyAuthenticationProvider;
+import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import net.hyerin.user.security.MyAuthenticationFailureHandler;
+import net.hyerin.user.security.MyAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
-@EnableWebSecurity // 웹 보안을 활성화
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    MyAuthenticationProvider myAuthenticationProvider;
+    private MyAuthenticationFailureHandler myAuthenticationFailureHandler;
 
     @Autowired
-    MyAuthenticationFailureHandler myAuthenticationFailureHandler;
+    private MyAuthenticationProvider myAuthenticationProvider;
+
+    public SecurityConfig(@Lazy MyAuthenticationFailureHandler myAuthenticationFailureHandler,
+                          @Lazy MyAuthenticationProvider myAuthenticationProvider){
+        this.myAuthenticationFailureHandler = myAuthenticationFailureHandler;
+        this.myAuthenticationProvider = myAuthenticationProvider;
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(myAuthenticationProvider);
+    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -42,8 +57,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/**").authenticated();
 
-        http.csrf().disable();
-
         http.formLogin()
                 .loginPage("/users/signin")
                 .loginProcessingUrl("/users/signin_processing")
@@ -57,12 +70,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/users/signin")
                 .invalidateHttpSession(true);
 
-        http.authenticationProvider(myAuthenticationProvider);
-    }
+        http.csrf().disable();
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        http.authenticationProvider(myAuthenticationProvider);
     }
 
 }

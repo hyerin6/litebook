@@ -1,6 +1,11 @@
 package net.hyerin.user.dto;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import net.hyerin.user.domain.Role;
 import net.hyerin.user.domain.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,10 +41,10 @@ public class UserSignupDto {
     private String profile;
 
     // 팩토리 메소드에 대한 설명 -> https://hyerin6.github.io/2020-04-05/0405/
-    public User toEntityWithPasswordEncoder(PasswordEncoder passwordEncoder) {
+    public User toEntityWithPasswordEncoder(String password) {
         return User.builder()
                 .email(email)
-                .password(passwordEncoder.encode(password1))
+                .password(password)
                 .name(name)
                 .phone(phone)
                 .profile(profile)

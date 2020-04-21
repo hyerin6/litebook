@@ -6,6 +6,7 @@ import net.hyerin.user.domain.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.EnumType;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class CustomUserDetails implements UserDetails {
 
     private Long id;

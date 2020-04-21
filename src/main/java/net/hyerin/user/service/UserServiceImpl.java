@@ -1,47 +1,42 @@
 package net.hyerin.user.service;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.hyerin.email.service.EmailService;
 import net.hyerin.user.domain.User;
 import net.hyerin.user.dto.UserSigninDto;
 import net.hyerin.user.dto.UserSignupDto;
 import net.hyerin.user.repository.UserRepository;
+import net.hyerin.user.security.CustomUserDetailsService;
+import net.hyerin.utils.EncryptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.SendFailedException;
-
-import java.io.Serializable;
+import sun.security.util.Password;
 
 import static net.hyerin.user.domain.Role.IS_AUTHENTICATED_FULLY;
 
 @Slf4j
 @Service("userService")
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService{
 
     private UserRepository userRepository;
     private EmailService emailService;
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, EmailService emailService, PasswordEncoder passwordEncoder){
+    public UserServiceImpl(UserRepository userRepository,
+                           EmailService emailService) {
         this.userRepository = userRepository;
         this.emailService = emailService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional
     public void signup(UserSignupDto userSignupDto) throws Exception {
-        User user = userSignupDto.toEntityWithPasswordEncoder(passwordEncoder);
+        User user = userSignupDto.toEntityWithPasswordEncoder(EncryptionUtils.encryptSHA256(userSignupDto.getPassword1()));
         emailService.sendMail(user.getEmail());
         userRepository.save(user);
     }

@@ -1,6 +1,9 @@
 package net.hyerin.user.dto;
 
 import lombok.*;
+import net.hyerin.user.domain.Role;
+import net.hyerin.user.domain.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

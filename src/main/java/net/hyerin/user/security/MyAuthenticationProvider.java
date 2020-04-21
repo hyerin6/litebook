@@ -1,8 +1,9 @@
 package net.hyerin.user.security;
 
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.hyerin.user.domain.User;
 import net.hyerin.user.dto.UserSigninDto;
+import net.hyerin.utils.EncryptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,6 +14,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -26,18 +28,19 @@ import java.util.List;
 import static org.springframework.security.access.vote.AuthenticatedVoter.IS_AUTHENTICATED_FULLY;
 
 // 사용자가 입력한 로그인 아이디와 비밀번호를 검사할 때 사용되는 클래스
-@Component
 @Slf4j
+@Component
 public class MyAuthenticationProvider implements AuthenticationProvider, Serializable {
 
     private CustomUserDetailsService userDetailsService;
 
-    private PasswordEncoder passwordEncoder;
+    private ValidatorFactory validatorFactory;
+
 
     @Autowired
-    public MyAuthenticationProvider(CustomUserDetailsService userDetailsService, PasswordEncoder passwordEncoder){
-        this.passwordEncoder = passwordEncoder;
+    public MyAuthenticationProvider(CustomUserDetailsService userDetailsService, ValidatorFactory validatorFactory){
         this.userDetailsService = userDetailsService;
+        this.validatorFactory = validatorFactory;
     }
 
     @Override
@@ -54,8 +57,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider, Seriali
                 .build();
 
         // 사용자가 입력한 form data 형식이 맞는지 검사
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
+        Validator validator = validatorFactory.getValidator();
 
         validator.validate(userSigninDto).stream().forEach(x -> {
             throw new ValidationFailedException(x.getMessage());
@@ -72,7 +74,8 @@ public class MyAuthenticationProvider implements AuthenticationProvider, Seriali
         }
 
         // 이메일, 비밀번호 불일치
-        if(!passwordEncoder.matches(userSigninDto.getPassword(), user.getPassword())) {
+        String pw = EncryptionUtils.encryptSHA256(userSigninDto.getPassword());
+        if(!pw.equals(user.getPassword())) {
             throw new BadCredentialsException(email);
         }
 
@@ -81,31 +84,12 @@ public class MyAuthenticationProvider implements AuthenticationProvider, Seriali
         grantedAuthorities.add(new SimpleGrantedAuthority(IS_AUTHENTICATED_FULLY));
 
         // 로그인 성공시 로그인 사용자 정보 반환
-        return new UsernamePasswordAuthenticationToken(email, password, user.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(email, password, grantedAuthorities);
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
-    }
-
-    public class MyAuthenticaion extends UsernamePasswordAuthenticationToken implements Serializable {
-        private static final long serialVersionUID = 1L;
-        User user;
-
-        public MyAuthenticaion (String email, String password, List<GrantedAuthority> grantedAuthorities, User user) {
-            super(email, password, grantedAuthorities);
-            this.user = user;
-        }
-
-        public User getUser() {
-            return user;
-        }
-
-        public void setUser(User user) {
-            this.user = user;
-        }
-
     }
 
 }
