@@ -21,14 +21,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private MyAuthenticationFailureHandler myAuthenticationFailureHandler;
 
-    @Autowired
     private MyAuthenticationProvider myAuthenticationProvider;
 
-    public SecurityConfig(@Lazy MyAuthenticationFailureHandler myAuthenticationFailureHandler,
-                          @Lazy MyAuthenticationProvider myAuthenticationProvider){
+    @Autowired
+    public SecurityConfig(MyAuthenticationFailureHandler myAuthenticationFailureHandler,
+                          MyAuthenticationProvider myAuthenticationProvider){
         this.myAuthenticationFailureHandler = myAuthenticationFailureHandler;
         this.myAuthenticationProvider = myAuthenticationProvider;
     }
