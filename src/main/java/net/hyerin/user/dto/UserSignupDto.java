@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import net.hyerin.user.domain.Role;
 import net.hyerin.user.domain.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +17,7 @@ import javax.validation.constraints.Size;
 
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserSignupDto {
@@ -34,16 +36,15 @@ public class UserSignupDto {
     @Size(min=2, max=30)
     private String name;
 
-    @Pattern(regexp = "[0-9]{10,11}", message = "10-11자리의 숫자만 입력가능합니다.")
     private String phone;
 
     private String profile;
 
     // 팩토리 메소드에 대한 설명 -> https://hyerin6.github.io/2020-04-05/0405/
-    public User toEntityWithPasswordEncoder(PasswordEncoder passwordEncoder) {
+    public User toEntityWithPasswordEncoder(String password) {
         return User.builder()
                 .email(email)
-                .password(passwordEncoder.encode(password1))
+                .password(password)
                 .name(name)
                 .phone(phone)
                 .profile(profile)

@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/test")
 public class TestController {
 
-    @Autowired
-    EmailService emailService;
-
     // 로그인 화면 확인을 위한 메소드
     @GetMapping("signin")
     public String signin() {
@@ -36,13 +33,6 @@ public class TestController {
     public String profile() {
         log.info("users/profile");
         return "users/profile";
-    }
-
-    // 이메일 전송 테스트를 위한 메소드
-    @GetMapping("email")
-    public String emailSend(){
-        emailService.sendMail("hyerinn6@gmail.com");
-        return "users/signupSuccess";
     }
 
 }
