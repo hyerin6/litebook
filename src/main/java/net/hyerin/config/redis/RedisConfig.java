@@ -1,6 +1,7 @@
 package net.hyerin.config.redis;
 
-import net.hyerin.user.domain.User;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,19 +12,21 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
+@Slf4j
 @Configuration
 @EnableRedisHttpSession
 public class RedisConfig {
 
-    @Value("${spring.redis.host}")
-    private String redisHost;
+    private RedisProperties redisProperties;
 
-    @Value("${spring.redis.port}")
-    private int redisPort;
+    @Autowired
+    public RedisConfig(RedisProperties redisProperties){
+        this.redisProperties = redisProperties;
+    }
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(redisHost, redisPort);
+        return new LettuceConnectionFactory(redisProperties.getRedisHost(), redisProperties.getRedisPort());
     }
 
     @Bean
