@@ -3,7 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <c:url var="R" value="/" />
-<link rel="stylesheet" href="${R}res/signin.css">
+<link rel="stylesheet" href="${R}css/signin.css">
 <!DOCTYPE html>
 <html>
 <head>

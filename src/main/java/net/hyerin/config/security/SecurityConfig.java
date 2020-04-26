@@ -33,13 +33,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/res/**");
+        web.ignoring().antMatchers("/WEB-INF/res/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/test/**").permitAll()
+                .antMatchers("/css/**").permitAll()
                 .antMatchers("/users/signup").permitAll()
                 .antMatchers("/users/signupSuccess").permitAll()
                 .antMatchers("/users/signupFail").permitAll()

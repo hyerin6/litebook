@@ -1,5 +1,5 @@
 FROM openjdk:8-jdk-alpine
-ADD litebook-0.0.1-SNAPSHOT.jar litebook.jar
+ADD litebook-0.0.1-SNAPSHOT.war litebook.war
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","litebook.jar"]
+ENTRYPOINT ["java","-jar","litebook.war"]

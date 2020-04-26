@@ -8,8 +8,7 @@
 </head>
 <body>
 <script type="text/javascript">
-    alert('인증 실패');
-    window.open('', '_self', '');
+    alert('인증 성공 ! 이제 로그인이 가능 합니다.');
     window.close();
 </script>
 </body>
