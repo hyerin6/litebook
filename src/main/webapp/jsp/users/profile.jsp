@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <c:url var="R" value="/" />
 <link rel="stylesheet" href="${R}css/profile.css">
 <!DOCTYPE html>
@@ -36,8 +36,14 @@
                             <!-- END profile-header-img -->
                             <!-- BEGIN profile-header-info -->
                             <div class="profile-header-info">
-                                <h4 class="m-t-10 m-b-5">Sean Ngu</h4>
-                                <p class="m-b-10">UXUI + Frontend Developer</p>
+                                <h4 class="m-t-10 m-b-5">
+                                    hyerin
+                                    <!-- <sec:authentication property="user.name" /> -->
+                                </h4>
+                                <p class="m-b-10">
+                                    hyerin@gmail.com
+                                    <!-- <sec:authentication property="user.email" /> -->
+                                </p>
                                 <a href="#" class="btn btn-xs btn-yellow">Edit Profile</a>
                             </div>
                             <!-- END profile-header-info -->

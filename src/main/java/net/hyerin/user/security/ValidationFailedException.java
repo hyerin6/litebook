@@ -11,4 +11,5 @@ public class ValidationFailedException extends AuthenticationException {
     public ValidationFailedException(String msg) {
         super(msg);
     }
+
 }

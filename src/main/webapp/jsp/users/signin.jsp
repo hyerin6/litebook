@@ -20,7 +20,7 @@
         <div class="loginbox-title">lite book</div>
         <div class="loginbox-title2">시작하려면 로그인하세요.</div>
         <br/><br/>
-        <form:form modelAttribute="userSigninDto" method="post" action="/users/signin_processing">
+        <form:form method="post" modelAttribute="userSigninDto" action="/users/signin_processing">
             <div class="loginbox-textbox">
                 <form:label path="email">Email</form:label>
                 <form:input path="email" class="form-control" placeholder="Email" />

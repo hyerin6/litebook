@@ -1,18 +1,12 @@
 package net.hyerin.user.dto;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import net.hyerin.user.domain.Role;
 import net.hyerin.user.domain.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Builder
@@ -38,7 +32,7 @@ public class UserSignupDto {
 
     private String phone;
 
-    private String profile;
+    private MultipartFile profile;
 
     // 팩토리 메소드에 대한 설명 -> https://hyerin6.github.io/2020-04-05/0405/
     public User toEntityWithPasswordEncoder(String password) {
@@ -47,7 +41,6 @@ public class UserSignupDto {
                 .password(password)
                 .name(name)
                 .phone(phone)
-                .profile(profile)
                 .userType(Role.ROLE_RESTRICTED)
                 .enabled(false)
                 .build();

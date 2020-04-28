@@ -1,9 +1,9 @@
 package net.hyerin.user.security;
 
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.hyerin.user.domain.User;
 import net.hyerin.user.dto.UserSigninDto;
-import net.hyerin.utils.EncryptionUtils;
+import net.hyerin.utils.security.EncryptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,12 +13,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.io.Serializable;
@@ -36,7 +34,6 @@ public class MyAuthenticationProvider implements AuthenticationProvider, Seriali
 
     private ValidatorFactory validatorFactory;
 
-
     @Autowired
     public MyAuthenticationProvider(CustomUserDetailsService userDetailsService, ValidatorFactory validatorFactory){
         this.userDetailsService = userDetailsService;
@@ -50,7 +47,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider, Seriali
         return authenticate(email, password);
     }
 
-    public Authentication authenticate(String email, String password) throws AuthenticationException {
+    public MyAuthenticaion authenticate(String email, String password) throws AuthenticationException {
         UserSigninDto userSigninDto = UserSigninDto.builder()
                 .email(email)
                 .password(password)
@@ -63,19 +60,19 @@ public class MyAuthenticationProvider implements AuthenticationProvider, Seriali
             throw new ValidationFailedException(x.getMessage());
         });
 
-        CustomUserDetails user = (CustomUserDetails) userDetailsService.loadUserByUsername(email);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
-        if(user == null)
+        if(userDetails == null)
             throw new UsernameNotFoundException(email);
 
         // 비활성화, 이메일 인증하지 않은 유저
-        if(!user.isEnabled()) {
+        if(!userDetails.isEnabled()) {
             throw new DisabledException(email);
         }
 
         // 이메일, 비밀번호 불일치
         String pw = EncryptionUtils.encryptSHA256(userSigninDto.getPassword());
-        if(!pw.equals(user.getPassword())) {
+        if(!pw.equals(userDetails.getPassword())) {
             throw new BadCredentialsException(email);
         }
 
@@ -84,12 +81,32 @@ public class MyAuthenticationProvider implements AuthenticationProvider, Seriali
         grantedAuthorities.add(new SimpleGrantedAuthority(IS_AUTHENTICATED_FULLY));
 
         // 로그인 성공시 로그인 사용자 정보 반환
-        return new UsernamePasswordAuthenticationToken(email, password, grantedAuthorities);
+        User user = userDetailsService.getUser(userDetails.getUsername());
+        return new MyAuthenticaion(email, password, grantedAuthorities, user);
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
+    }
+
+    public class MyAuthenticaion extends UsernamePasswordAuthenticationToken {
+        private static final long serialVersionUID = 1L;
+
+        User user;
+
+        public MyAuthenticaion (String loginId, String password, List<GrantedAuthority> grantedAuthorities, User user) {
+            super(loginId, password, grantedAuthorities);
+            this.user = user;
+        }
+
+        public User getUser() {
+            return user;
+        }
+
+        public void setUser(User user) {
+            this.user = user;
+        }
     }
 
 }

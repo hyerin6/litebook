@@ -12,6 +12,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -76,4 +77,5 @@ public class CustomUserDetails implements UserDetails {
                 .roles(roles)
                 .build();
     }
+
 }

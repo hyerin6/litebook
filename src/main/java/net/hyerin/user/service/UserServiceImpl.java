@@ -1,21 +1,18 @@
 package net.hyerin.user.service;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.hyerin.email.service.EmailService;
+import net.hyerin.images.domain.Images;
+import net.hyerin.images.service.ImagesService;
 import net.hyerin.user.domain.User;
-import net.hyerin.user.dto.UserSigninDto;
 import net.hyerin.user.dto.UserSignupDto;
 import net.hyerin.user.repository.UserRepository;
-import net.hyerin.user.security.CustomUserDetailsService;
-import net.hyerin.utils.EncryptionUtils;
+import net.hyerin.utils.s3.S3ServiceImpl;
+import net.hyerin.utils.security.EncryptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-import sun.security.util.Password;
 
 import static net.hyerin.user.domain.Role.IS_AUTHENTICATED_FULLY;
 
@@ -25,12 +22,18 @@ public class UserServiceImpl implements UserService{
 
     private UserRepository userRepository;
     private EmailService emailService;
+    private S3ServiceImpl s3Service;
+    private ImagesService imagesService;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           EmailService emailService) {
+                           EmailService emailService,
+                           S3ServiceImpl s3Service,
+                           ImagesService imagesService) {
         this.userRepository = userRepository;
         this.emailService = emailService;
+        this.s3Service = s3Service;
+        this.imagesService = imagesService;
     }
 
     @Override
@@ -38,6 +41,13 @@ public class UserServiceImpl implements UserService{
     public void signup(UserSignupDto userSignupDto) throws Exception {
         User user = userSignupDto.toEntityWithPasswordEncoder(EncryptionUtils.encryptSHA256(userSignupDto.getPassword1()));
         emailService.sendMail(user.getEmail());
+
+        if(!userSignupDto.getProfile().isEmpty()) {
+            String path = s3Service.userProfileUpload(userSignupDto.getProfile()); // aws s3 이미지 저장
+            Images profile = imagesService.saveUserProfile(path); // Images 테이블에 저장
+            user.setProfile(profile); // user에 profile 저장
+        }
+
         userRepository.save(user);
     }
 

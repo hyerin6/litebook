@@ -1,4 +1,4 @@
-package net.hyerin.utils;
+package net.hyerin.utils.security;
 
 import java.security.MessageDigest;
 

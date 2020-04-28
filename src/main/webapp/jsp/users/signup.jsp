@@ -48,7 +48,7 @@
                 </div>
                 <div class="signupbox-textbox">
                     <form:label path="profile">Profile</form:label>
-                    <input type="file" class="form-control" placeholder="Profile" path="profile" />
+                    <form:input type="file" class="form-control" placeholder="Profile" path="profile"/>
                 </div>
                 <div class="signupbox-textbox">
                     <button type="submit" class="btn btn-primary btn-block">
