@@ -2,6 +2,7 @@ package net.hyerin.email.service;
 
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -26,7 +27,7 @@ public class EmailServiceImpl implements EmailService {
     private RedisTemplate<String, String> redisTemplate;
 
     @Autowired
-    public EmailServiceImpl(JavaMailSender javaMailSender, RedisTemplate<String, String> redisTemplate){
+    public EmailServiceImpl(JavaMailSender javaMailSender, @Qualifier("stringRedisTemplate") RedisTemplate<String, String> redisTemplate){
         this.javaMailSender = javaMailSender;
         this.redisTemplate = redisTemplate;
     }

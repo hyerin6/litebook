@@ -1,5 +1,6 @@
 package net.hyerin.config.security;
 
+import net.hyerin.user.security.CustomUserDetailsService;
 import net.hyerin.user.security.MyAuthenticationFailureHandler;
 import net.hyerin.user.security.MyAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -19,16 +21,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private MyAuthenticationProvider myAuthenticationProvider;
 
+    private CustomUserDetailsService customUserDetailsService;
+
     @Autowired
     public SecurityConfig(MyAuthenticationFailureHandler myAuthenticationFailureHandler,
-                          MyAuthenticationProvider myAuthenticationProvider){
+                          MyAuthenticationProvider myAuthenticationProvider,
+                          CustomUserDetailsService customUserDetailsService){
         this.myAuthenticationFailureHandler = myAuthenticationFailureHandler;
         this.myAuthenticationProvider = myAuthenticationProvider;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(myAuthenticationProvider);
+        auth.userDetailsService(customUserDetailsService);
     }
 
     @Override
@@ -47,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/signupSuccess").permitAll()
                 .antMatchers("/users/signupFail").permitAll()
                 .antMatchers("/users/signin").permitAll()
+                .antMatchers("/users/profile").permitAll()
                 .antMatchers("/users/email").permitAll()
                 .antMatchers("/users/email/**").permitAll()
                 .antMatchers("/auth/**").permitAll()

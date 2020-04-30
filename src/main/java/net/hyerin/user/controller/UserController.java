@@ -14,6 +14,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Slf4j
@@ -86,8 +88,15 @@ public class UserController {
         return "users/profile";
     }
 
+    @RequestMapping(value = "signin_processing", method = RequestMethod.POST)
+    public String signinPrceocessing(@Valid @ModelAttribute("userSigninDto") UserSigninDto userSigninDto,
+                         BindingResult bindingResult, Model model) {
+        return "users/profile";
+    }
+
     @RequestMapping(value = "profile", method = RequestMethod.GET)
-    public String profile(){
+    public String profile(HttpServletRequest request){
+        HttpSession session = request.getSession();
         return "users/profile";
     }
 

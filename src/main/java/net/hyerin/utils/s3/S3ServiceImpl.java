@@ -3,20 +3,19 @@ package net.hyerin.utils.s3;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.internal.Mimetypes;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.util.IOUtils;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
-import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 
 @Service
@@ -37,7 +36,7 @@ public class S3ServiceImpl implements S3Service{
     @Value("${cloud.aws.region.static}")
     private String region;
 
-    @PostConstruct
+    @PostConstruct // 객체가 생성된 후 별도의 초기화 작업을 위해 실행하는 메소드를 선언한다.
     @Override
     public void setS3Client() {
         AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);

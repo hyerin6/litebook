@@ -10,7 +10,7 @@
     <meta charset="utf-8">
     <!--  This file has been downloaded from https://bootdey.com  -->
     <!--  All snippets are MIT license https://bootdey.com/license -->
-    <title>Bootdey.com</title>
+    <title>litebook</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -31,20 +31,21 @@
                         <div class="profile-header-content">
                             <!-- BEGIN profile-header-img -->
                             <div class="profile-header-img">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                                <sec:authentication property="user.profile.filePath" var="path"/>
+                                <img src="${path}" alt="">
                             </div>
                             <!-- END profile-header-img -->
                             <!-- BEGIN profile-header-info -->
                             <div class="profile-header-info">
                                 <h4 class="m-t-10 m-b-5">
-                                    hyerin
-                                    <!-- <sec:authentication property="user.name" /> -->
+                                    <sec:authentication property="user.name" />
                                 </h4>
                                 <p class="m-b-10">
-                                    hyerin@gmail.com
-                                    <!-- <sec:authentication property="user.email" /> -->
+                                    <sec:authentication property="user.email" />
                                 </p>
+                                <sec:authorize access="authenticated">
                                 <a href="#" class="btn btn-xs btn-yellow">Edit Profile</a>
+                                </sec:authorize>
                             </div>
                             <!-- END profile-header-info -->
                         </div>

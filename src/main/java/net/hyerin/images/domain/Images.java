@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import java.io.Serializable;
 
 @Entity
 @Builder
@@ -20,7 +21,7 @@ import javax.persistence.OneToOne;
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Images {
+public class Images implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

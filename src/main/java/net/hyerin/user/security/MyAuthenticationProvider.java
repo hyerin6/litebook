@@ -28,7 +28,7 @@ import static org.springframework.security.access.vote.AuthenticatedVoter.IS_AUT
 // 사용자가 입력한 로그인 아이디와 비밀번호를 검사할 때 사용되는 클래스
 @Slf4j
 @Component
-public class MyAuthenticationProvider implements AuthenticationProvider, Serializable {
+public class MyAuthenticationProvider implements AuthenticationProvider {
 
     private CustomUserDetailsService userDetailsService;
 
@@ -89,24 +89,4 @@ public class MyAuthenticationProvider implements AuthenticationProvider, Seriali
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
-
-    public class MyAuthenticaion extends UsernamePasswordAuthenticationToken {
-        private static final long serialVersionUID = 1L;
-
-        User user;
-
-        public MyAuthenticaion (String loginId, String password, List<GrantedAuthority> grantedAuthorities, User user) {
-            super(loginId, password, grantedAuthorities);
-            this.user = user;
-        }
-
-        public User getUser() {
-            return user;
-        }
-
-        public void setUser(User user) {
-            this.user = user;
-        }
-    }
-
 }
