@@ -3,39 +3,50 @@ package net.hyerin.config.security;
 import net.hyerin.user.security.CustomUserDetailsService;
 import net.hyerin.user.security.MyAuthenticationFailureHandler;
 import net.hyerin.user.security.MyAuthenticationProvider;
+import net.hyerin.user.security.EmailPasswordAuthManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    //    private MyAuthenticationProvider myAuthenticationProvider;
 
     private MyAuthenticationFailureHandler myAuthenticationFailureHandler;
 
-    private MyAuthenticationProvider myAuthenticationProvider;
-
     private CustomUserDetailsService customUserDetailsService;
 
+    private EmailPasswordAuthManager authManager;
+
     @Autowired
-    public SecurityConfig(MyAuthenticationFailureHandler myAuthenticationFailureHandler,
-                          MyAuthenticationProvider myAuthenticationProvider,
+    public SecurityConfig(EmailPasswordAuthManager authManager,
+                          MyAuthenticationFailureHandler myAuthenticationFailureHandler,
                           CustomUserDetailsService customUserDetailsService){
         this.myAuthenticationFailureHandler = myAuthenticationFailureHandler;
-        this.myAuthenticationProvider = myAuthenticationProvider;
         this.customUserDetailsService = customUserDetailsService;
+        this.authManager = authManager;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(myAuthenticationProvider);
         auth.userDetailsService(customUserDetailsService);
+    }
+
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return authManager;
+    }
+
+    @Override
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return authManager;
     }
 
     @Override
@@ -73,8 +84,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/users/logout_processing"))
                 .logoutSuccessUrl("/users/signin")
                 .invalidateHttpSession(true);
-
-        http.authenticationProvider(myAuthenticationProvider);
     }
 
 }

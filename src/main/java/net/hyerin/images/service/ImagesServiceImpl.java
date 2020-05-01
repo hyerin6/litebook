@@ -5,7 +5,7 @@ import net.hyerin.images.repository.ImagesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("imagesService")
 public class ImagesServiceImpl implements ImagesService{
 
     private ImagesRepository imagesRepository;

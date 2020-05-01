@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.hyerin.email.service.EmailService;
 import net.hyerin.user.dto.UserSigninDto;
 import net.hyerin.user.dto.UserSignupDto;
+import net.hyerin.user.security.ValidationFailedException;
 import net.hyerin.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -23,11 +24,15 @@ import javax.validation.Valid;
 @RequestMapping(value = "users")
 public class UserController {
 
-    @Autowired
-    EmailService emailService;
+    private EmailService emailService;
+
+    private UserService userService;
 
     @Autowired
-    UserService userService;
+    public UserController(UserService userService, EmailService emailService){
+        this.userService = userService;
+        this.emailService = emailService;
+    }
 
     @RequestMapping(value="signup", method = RequestMethod.GET)
     public String signup(Model model, UserSignupDto userSignupDto){

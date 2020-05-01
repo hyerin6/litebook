@@ -18,7 +18,7 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 
-@Service
+@Service("s3Service")
 @NoArgsConstructor
 public class S3ServiceImpl implements S3Service{
 

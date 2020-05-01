@@ -32,7 +32,6 @@ public class UserServiceImpl implements UserService{
                            ImagesService imagesService) {
         this.userRepository = userRepository;
         this.emailService = emailService;
-        this.s3Service = s3Service;
         this.imagesService = imagesService;
     }
 
