@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService{
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.imagesService = imagesService;
+        this.s3Service = s3Service;
     }
 
     @Override
@@ -41,10 +42,10 @@ public class UserServiceImpl implements UserService{
         User user = userSignupDto.toEntityWithPasswordEncoder(EncryptionUtils.encryptSHA256(userSignupDto.getPassword1()));
         emailService.sendMail(user.getEmail());
 
-        if(!userSignupDto.getProfile().isEmpty()) {
+        if(userSignupDto.getProfile() != null) {
             String path = s3Service.userProfileUpload(userSignupDto.getProfile()); // aws s3 이미지 저장
             Images profile = imagesService.saveUserProfile(path); // Images 테이블에 저장
-            user.setProfile(profile); // user에 profile 저장
+            user.setProfile(profile); // user에 profile
         }
 
         userRepository.save(user);
