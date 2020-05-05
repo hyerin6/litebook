@@ -5,19 +5,19 @@ body{
 
 .profile-header {
     position: relative;
-    overflow: hidden
+    overflow: hidden;
 }
 
 .profile-header .profile-header-cover {
-    background-image: url(https://seantheme.com/color-admin-v4.1/admin/assets/css/default/images/profile-cover.jpg);
+    background-image: url(https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile_background.jpeg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     position: absolute;
     left: 0;
     right: 0;
-    top: 0;
-    bottom: 0
+    top: 5px;
+    bottom: 0;
 }
 
 .profile-header .profile-header-cover:before {
@@ -32,7 +32,8 @@ body{
 
 .profile-header .profile-header-content {
     color: #fff;
-    padding: 25px
+    padding: 35px;
+    padding-top: 100px;
 }
 
 .profile-header-img {
@@ -54,17 +55,27 @@ body{
 
 .profile-header-info h4 {
     font-weight: 500;
+    font-family: 'Lucida Sans','trebuchet MS',Arial,Helvetica;
     color: #fff
 }
 
 .profile-header-img+.profile-header-info {
+    font-family: 'Lucida Sans','trebuchet MS',Arial,Helvetica;
     margin-left: 140px
 }
 
 .profile-header .profile-header-content,
 .profile-header .profile-header-tab {
-    position: relative
+    display: block;
+    padding-left: 45px;
+    position: relative;
 }
+
+.nav-item{
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
 
 .b-minus-1,
 .b-minus-10,
@@ -151,8 +162,9 @@ body{
 .profile-header .profile-header-tab {
     background: #fff;
     list-style-type: none;
+    text-align: center;
     margin: -10px 0 0;
-    padding: 0 0 0 140px;
+    padding: 20px 0px 20px 0px;
     white-space: nowrap;
     border-radius: 0
 }
@@ -341,7 +353,7 @@ body.flat-black {
 .flat-black .sidebar .sub-menu>li>a:focus,
 .flat-black .sidebar .sub-menu>li>a:hover,
 .sidebar .nav>li.nav-profile>a {
-    color: #fff
+    color: #fff;
 }
 
 .flat-black .sidebar .sub-menu>li>a,
@@ -641,3 +653,66 @@ select.form-control:not([size]):not([multiple]) {
 .text-danger, .text-red {
     color: #ff5b57!important;
 }
+
+.btn-gradient.mini,
+.btn-effect.mini {
+    padding: 5px 13px;
+    font-size: 13px;
+}
+
+/* Gradient buttons */
+.btn-gradient {
+    text-decoration: none;
+    color: white;
+    padding: 10px 30px;
+    display: inline-block;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.21);
+    border-bottom: 4px solid rgba(0,0,0,0.21);
+    border-radius: 4px;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+}
+
+.btn-gradient.blue {
+    background: rgba(102,152,203,1);
+    background: -moz-linear-gradient(top, rgba(102,152,203,1) 0%, rgba(92,138,184,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(102,152,203,1) 0%, rgba(92,138,184,1) 100%);
+    background: -o-linear-gradient(top, rgba(102,152,203,1) 0%, rgba(92,138,184,1) 100%);
+    background: -ms-linear-gradient(top, rgba(102,152,203,1) 0%, rgba(92,138,184,1) 100%);
+    background: linear-gradient(to bottom, rgba(102,152,203,1) 0%, rgba(92,138,184,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6698cb', endColorstr='#5c8ab8', GradientType=0 );
+}
+
+.main_nav{
+    padding-top: 10px;
+    text-align: center;
+}
+
+.post{
+    font-size: 1.3em;
+}
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%; /* Could be more or less, depending on screen size */
+}
+
