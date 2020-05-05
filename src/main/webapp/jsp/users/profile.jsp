@@ -51,13 +51,13 @@
                         </div>
                         <!-- END profile-header-content -->
                         <!-- BEGIN profile-header-tab -->
-                        <div class="main_nav">
+                        <div class="main_nav tab_wrap">
                         <ul class="profile-header-tab nav nav-tabs center tab_menu_container">
-                            <li class="nav-item tab_menu_btn on"><a href="#profile-post" class="nav-link active show" data-toggle="tab">POSTS</a></li>
-                            <li class="nav-item tab_menu_btn"><a href="#profile-about" class="nav-link" data-toggle="tab">TIME LINE</a></li>
-                            <li class="nav-item tab_menu_btn"><a href="#profile-photos" class="nav-link" data-toggle="tab">FOLLOWER</a></li>
-                            <li class="nav-item tab_menu_btn"><a href="#profile-videos" class="nav-link" data-toggle="tab">FOLLOWING</a></li>
-                            <li class="nav-item tab_menu_btn"><a href="#profile-videos" class="nav-link" data-toggle="tab">SEARCH</a></li>
+                            <li class="nav-item tab_menu_btn on"><a href="#profile-post" class="tab_menu_btn1 active show" data-toggle="tab">POSTS</a></li>
+                            <li class="nav-item tab_menu_btn"><a href="#profile-about" class="tab_menu_btn2"  data-toggle="tab">TIME LINE</a></li>
+                            <li class="nav-item tab_menu_btn"><a href="#profile-photos" class="tab_menu_btn3"  data-toggle="tab">FOLLOWER</a></li>
+                            <li class="nav-item tab_menu_btn"><a href="#profile-videos" class="tab_menu_btn4"  data-toggle="tab">FOLLOWING</a></li>
+                            <li class="nav-item tab_menu_btn"><a href="#profile-videos" class="tab_menu_btn5"  data-toggle="tab">SEARCH</a></li>
                         </ul>
                         </div>
                         <!-- END profile-header-tab -->
@@ -69,7 +69,7 @@
                     <!-- begin tab-content -->
                     <div class="tab-content p-0">
                         <!-- begin #profile-post tab -->
-                        <div class="tab-pane fade active show tab_box on" id="profile-post">
+                        <div class="tab-pane fade active show tab_box1 tab_box on" id="profile-post">
                             <!-- begin timeline -->
                             <ul class="timeline">
                                 <li>
@@ -98,7 +98,9 @@
                                     <!-- begin timeline-body -->
                                     <div class="timeline-body">
                                         <div class="timeline-header">
-                                            <span class="userimage"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></span>
+                                            <span class="userimage">
+                                                <sec:authentication property="user.profile.filePath" var="path"/>
+                                                <img src="${path}" alt=""></span>
                                             <span class="username"><a href="javascript:;">
                                                 <sec:authentication property="user.name" />
                                             </a> <small></small></span>
@@ -125,7 +127,10 @@
                                             <a href="javascript:;" class="m-r-15 text-inverse-lighter" style="margin-left: 5px;"> Delete </a>
                                         </div>
                                         <div class="timeline-comment-box">
-                                            <div class="user"><img src="https://bootdey.com/img/Content/avatar/avatar3.png"></div>
+                                            <div class="user">
+                                                <sec:authentication property="user.profile.filePath" var="path"/>
+                                                <img src="${path}" alt="">
+                                            </div>
                                             <div class="input">
                                                 <form action="">
                                                     <div class="input-group">
@@ -153,12 +158,65 @@
                                     <!-- begin timeline-body -->
                                 </li>
                             </ul>
+                        </div>
                             <!-- end timeline -->
                         </div>
                         <!-- end #profile-post tab -->
                     </div>
-                    <div class="tab_box on">
+                    <!-- 타임라인 -->
+                    <div class="tab_box2 tab_box">
+                        TIME LINE
                     </div>
+                    <!-- 팔로워 리스트 -->
+                    <div class="tab_box3 tab_box">
+                        <div class="follower_container">
+                            <div class="people-nearby">
+                                <div class="nearby-user">
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-2">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg">
+                                        </div>
+                                        <div class="col-md-7 col-sm-7">
+                                            <h5><a href="#" class="profile-link">Sophia Page</a></h5>
+                                            <p>Software Engineer</p>
+                                            <p class="text-muted">500m away</p>
+                                        </div>
+                                        <div class="col-md-3 col-sm-3">
+                                            <button class="btn-gradient blue mini" type="button" style="margin-top: 30px; margin-left: 60px;">FOLLOW</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 팔로잉 리스트 -->
+                    <div class="tab_box4 tab_box">
+                        <div class="follower_container">
+                            <div class="people-nearby">
+                                <div class="nearby-user">
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-2">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg">
+                                        </div>
+                                        <div class="col-md-7 col-sm-7">
+                                            <h5><a href="#" class="profile-link">Sophia Page</a></h5>
+                                            <p>Software Engineer</p>
+                                            <p class="text-muted">500m away</p>
+                                        </div>
+                                        <div class="col-md-3 col-sm-3">
+                                            <button class="btn-gradient blue mini" type="button" style="margin-top: 30px; margin-left: 60px;">UN FOLLOW</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 검색 -->
+                    <div class="tab_box5 tab_box">
+                        SEARCH
+                    </div>
+
+
                     <!-- end tab-content -->
                 </div>
                 <!-- end profile-content -->
