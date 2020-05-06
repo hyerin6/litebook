@@ -631,16 +631,16 @@ select.form-control:not([size]):not([multiple]) {
     width: 34px;
     height: 34px;
     overflow: hidden;
-    border-radius: 30px
+    border-radius: 40px
 }
 
 .timeline-comment-box .user img {
     max-width: 100%;
-    max-height: 100%
+    max-height: 100%;
 }
 
 .timeline-comment-box .user+.input {
-    margin-left: 44px
+    margin-left: 44px;
 }
 
 .lead {
@@ -743,5 +743,27 @@ img.profile-photo-lg{
     border-radius: 10%;
 }
 
-
+button {
+    background:none;
+    border:0;
+    outline:0;
+    cursor:pointer;
+}
+.tab_menu_container {
+    display:flex;
+}
+.tab_menu_btn {
+    transition:0.3s all;
+}
+.tab_menu_btn.on {
+    font-weight:700;
+}
+.tab_menu_btn:hover {
+}
+.tab_box {
+    display:none;
+}
+.tab_box.on {
+    display:block;
+}
 
