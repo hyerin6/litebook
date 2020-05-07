@@ -32,7 +32,8 @@
                         <div class="profile-header-content">
                             <!-- 프로필 사진 -->
                             <div class="profile-header-img">
-                                <sec:authentication property="user.profile.filePath" var="path"/><img src="${path}" alt="">
+                                <sec:authentication property="user.profile.filePath" var="path"/>
+                                <img src="${path}" alt="" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
                             </div>
                             <div class="profile-header-info"> <!-- 이름, 이메일 -->
                                 <h4 class="m-t-10 m-b-5"><sec:authentication property="user.name" /></h4>
@@ -46,12 +47,12 @@
                         <!-- 네비게이션바 -->
                         <div class="main_nav tab_wrap">
                             <ul class="profile-header-tab nav nav-tabs center tab_menu_container">
-                                <li class="nav-item tab_menu_btn on"><a href="#profile-post" class="tab_menu_btn1 tab_menu_btn1 on active show" data-toggle="tab">POSTS</a></li>
-                            <li class="nav-item tab_menu_btn"><a href="#profile-about" class="tab_menu_btn2"  data-toggle="tab">TIME LINE</a></li>
-                            <li class="nav-item tab_menu_btn"><a href="#profile-photos" class="tab_menu_btn3"  data-toggle="tab">FOLLOWER</a></li>
-                            <li class="nav-item tab_menu_btn"><a href="#profile-videos" class="tab_menu_btn4"  data-toggle="tab">FOLLOWING</a></li>
-                            <li class="nav-item tab_menu_btn"><a href="#profile-videos" class="tab_menu_btn5"  data-toggle="tab">SEARCH</a></li>
-                        </ul>
+                                <li class="nav-item tab_menu_btn on"><a href="#profile-posts" class="tab_menu_btn1 tab_menu_btn1 on active show" data-toggle="tab">POSTS</a></li>
+                                <li class="nav-item tab_menu_btn"><a href="#profile-timeline" class="tab_menu_btn2"  data-toggle="tab">TIME LINE</a></li>
+                                <li class="nav-item tab_menu_btn"><a href="#profile-follower" class="tab_menu_btn3"  data-toggle="tab">FOLLOWER</a></li>
+                                <li class="nav-item tab_menu_btn"><a href="#profile-following" class="tab_menu_btn4"  data-toggle="tab">FOLLOWING</a></li>
+                                <li class="nav-item tab_menu_btn"><a href="#profile-search" class="tab_menu_btn5"  data-toggle="tab">SEARCH</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -62,7 +63,7 @@
                     <!-- begin tab-content -->
                     <div class="tab-content p-0">
                         <!-- begin #profile-post tab -->
-                        <div class="tab-pane fade active show tab_box1 tab_box on" id="profile-post">
+                        <div class="tab-pane fade active show tab_box1 tab_box on" id="profile-posts">
                             <!-- begin timeline -->
                             <ul class="timeline">
                                 <li>
@@ -79,24 +80,25 @@
                                         </div>
                                     </div>
                                 </li>
-                                <c:forEach var="posts" items="${ posts }">
+                                <c:forEach var="post" items="${ posts }">
                                 <li>
                                     <div class="timeline-icon">
-                                        <a href="javascript:;">&nbsp;</a>
+                                        <a href="javascript:;">&nbsp</a>
                                     </div>
                                     <div class="timeline-body">
                                         <div class="timeline-header">
                                             <span class="userimage">
                                                 <sec:authentication property="user.profile.filePath" var="path"/>
-                                                <img src="${path}" alt=""></span>
+                                                <img src="${path}" alt="" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
+                                            </span>
                                             <span class="username"><a href="javascript:;">
                                                 <sec:authentication property="user.name" />
                                             </a> <small></small></span>
-                                            <span class="date pull-right text-muted">${posts.startedDate}</span>
+                                            <span class="date pull-right text-muted">${post.startedDate}</span>
                                         </div>
                                         <div class="timeline-content">
                                             <p class="post">
-                                                    ${posts.mainText}
+                                                ${post.mainText}
                                             </p>
                                         </div>
                                         <div class="timeline-likes">
@@ -115,7 +117,7 @@
                                             <a href="javascript:;" class="m-r-15 text-inverse-lighter" style="margin-left: 5px;"> Delete </a>
                                         </div>
                                         <div class="timeline-comment-box">
-                                            <div class="user"><img src="${path}"></div>
+                                            <div class="user"><img class="user" src="${path}" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'"></div>
                                             <div class="input">
                                                 <form action="">
                                                     <div class="input-group">
@@ -161,7 +163,7 @@
                                 <div class="nearby-user">
                                     <div class="row">
                                         <div class="col-md-2 col-sm-2">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
                                         </div>
                                         <div class="col-md-7 col-sm-7">
                                             <h5><a href="#" class="profile-link">Sophia Page</a></h5>
@@ -183,7 +185,7 @@
                                 <div class="nearby-user">
                                     <div class="row">
                                         <div class="col-md-2 col-sm-2">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
                                         </div>
                                         <div class="col-md-7 col-sm-7">
                                             <h5><a href="#" class="profile-link">Sophia Page</a></h5>
@@ -203,8 +205,6 @@
                         SEARCH
                     </div>
                 </div>
-
-
                     <!-- end tab-content -->
                 </div>
                 <!-- end profile-content -->

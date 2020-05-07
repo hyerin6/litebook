@@ -48,7 +48,6 @@
                 <c:if test="${ param.error == '3' }"> 이메일 혹은 비밀번호가 일치하지 않습니다. </c:if>
             </div>
             </c:if>
-
         </form:form>
     </div>
 </div>

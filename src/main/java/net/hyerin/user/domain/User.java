@@ -7,9 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.hyerin.images.domain.Images;
+import net.hyerin.post.domain.Post;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Builder
@@ -36,6 +38,9 @@ public class User implements Serializable {
     @OneToOne
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private Images profile;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
 
     @Enumerated(EnumType.STRING)
     private Role userType;

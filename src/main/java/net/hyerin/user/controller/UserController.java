@@ -2,17 +2,27 @@ package net.hyerin.user.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import net.hyerin.email.service.EmailService;
+import net.hyerin.post.dto.InsertPostDto;
+import net.hyerin.post.repository.PostRepository;
+import net.hyerin.post.service.PostService;
+import net.hyerin.user.domain.User;
 import net.hyerin.user.dto.UserSigninDto;
 import net.hyerin.user.dto.UserSignupDto;
 import net.hyerin.user.security.ValidationFailedException;
 import net.hyerin.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,10 +38,13 @@ public class UserController {
 
     private UserService userService;
 
+    private PostService postService;
+
     @Autowired
-    public UserController(UserService userService, EmailService emailService){
+    public UserController(UserService userService, EmailService emailService, PostService postService){
         this.userService = userService;
         this.emailService = emailService;
+        this.postService = postService;
     }
 
     @RequestMapping(value="signup", method = RequestMethod.GET)
@@ -83,7 +96,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "signin", method = RequestMethod.GET)
-    public String signin(Model model, UserSigninDto userSigninDto){
+    public String signin(Model model, @ModelAttribute("userSigninDto")UserSigninDto userSigninDto){
         return "users/signin";
     }
 
@@ -95,14 +108,24 @@ public class UserController {
 
     @RequestMapping(value = "signin_processing", method = RequestMethod.POST)
     public String signinPrceocessing(@Valid @ModelAttribute("userSigninDto") UserSigninDto userSigninDto,
-                         BindingResult bindingResult, Model model) {
+                                     BindingResult bindingResult, Model model) {
         return "users/profile";
     }
 
+    // 나의 프로필 : user.posts 와 POSTS 메뉴에서 글쓰기 기능을 위해 insertPostDto 가 필요하다.
     @RequestMapping(value = "profile", method = RequestMethod.GET)
-    public String profile(HttpServletRequest request){
-        HttpSession session = request.getSession();
+    public String profile(Model model){
+        model.addAttribute("posts", postService.findByUserId());
+        model.addAttribute("insertPostDto", new InsertPostDto());
         return "users/profile";
+    }
+
+    // 친구 프로필 : id 에 해당하는 user, user.posts 가 필요하다.
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    public String profile(@PathVariable("id") Long id, Model model){
+        model.addAttribute("user", userService.getFriend(id));
+        model.addAttribute("posts", postService.findByFriendId(id));
+        return "friends/profile";
     }
 
 }
