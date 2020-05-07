@@ -11,6 +11,7 @@ import java.util.List;
 public interface PostService {
 
     public void insertPost(InsertPostDto insertPostDto) throws ParseException;
-    public List<Post> findByUserId(Long userId);
+    public List<Post> findByUserId();
+    public List<Post> findByFriendId(Long id);
 
 }

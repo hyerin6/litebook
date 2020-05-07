@@ -1,6 +1,11 @@
 package net.hyerin.post.dto;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import net.hyerin.post.domain.Post;
 import net.hyerin.user.domain.User;
 

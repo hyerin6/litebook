@@ -48,8 +48,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> findByUserId(Long userId){
-        return postRepository.findByUserId(userId);
+    public List<Post> findByUserId(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        User user = userService.getUser(email);
+        return postRepository.findByUserId(user.getId());
+    }
+
+    @Override
+    public List<Post> findByFriendId(Long id){
+        return postRepository.findByUserId(id);
     }
 
 }
