@@ -86,12 +86,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User getFriend(Long id){
+    public User findById(Long id){
         return userRepository.findById(id).get();
     }
 
     @Override
-    public User getUser(String email){
+    public User findByEmail(String email){
         return userRepository.findOneByEmail(email);
     }
 

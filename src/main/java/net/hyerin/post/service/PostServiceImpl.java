@@ -31,16 +31,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void insertPost(InsertPostDto insertPostDto) throws ParseException {
+    public void insertPost(InsertPostDto insertPostDto, User user) throws ParseException {
         // starteDate 저장
         String now =  formatter.format(new Date());
         Date startedDate =  formatter.parse(now);
         insertPostDto.setStartedDate(startedDate);
-
-        // user 정보 저장
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        User user = userService.getUser(email);
 
         // Insert post
         Post post = insertPostDto.toEntity(user);
@@ -48,16 +43,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> findByUserId(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        User user = userService.getUser(email);
-        return postRepository.findByUserId(user.getId());
+    public List<Post> findByUserId(Long userId){
+        return postRepository.findByUserId(userId);
     }
 
     @Override
-    public List<Post> findByFriendId(Long id){
-        return postRepository.findByUserId(id);
+    public List<Post> findByFriendId(Long userId){
+        return postRepository.findByUserId(userId);
     }
 
 }

@@ -2,31 +2,23 @@ package net.hyerin.user.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import net.hyerin.email.service.EmailService;
+import net.hyerin.follow.service.FollowService;
 import net.hyerin.post.dto.InsertPostDto;
-import net.hyerin.post.repository.PostRepository;
 import net.hyerin.post.service.PostService;
 import net.hyerin.user.domain.User;
 import net.hyerin.user.dto.UserSigninDto;
 import net.hyerin.user.dto.UserSignupDto;
-import net.hyerin.user.security.ValidationFailedException;
+import net.hyerin.user.security.CustomUserDetails;
 import net.hyerin.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Slf4j
@@ -40,11 +32,15 @@ public class UserController {
 
     private PostService postService;
 
+    private FollowService followService;
+
     @Autowired
-    public UserController(UserService userService, EmailService emailService, PostService postService){
+    public UserController(UserService userService, EmailService emailService,
+                          PostService postService, FollowService followService){
         this.userService = userService;
         this.emailService = emailService;
         this.postService = postService;
+        this.followService = followService;
     }
 
     @RequestMapping(value="signup", method = RequestMethod.GET)
@@ -115,15 +111,20 @@ public class UserController {
     // 나의 프로필 : user.posts 와 POSTS 메뉴에서 글쓰기 기능을 위해 insertPostDto 가 필요하다.
     @RequestMapping(value = "profile", method = RequestMethod.GET)
     public String profile(Model model){
-        model.addAttribute("posts", postService.findByUserId());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(auth.getName());
+
         model.addAttribute("insertPostDto", new InsertPostDto());
+        model.addAttribute("posts", postService.findByUserId(user.getId()));
+        model.addAttribute("followers", followService.findByFollowerId(user.getId()));
+        model.addAttribute("followings", followService.findByFollowingId(user.getId()));
         return "users/profile";
     }
 
-    // 친구 프로필 : id 에 해당하는 user, user.posts 가 필요하다.
+    // 다른 사용자 프로필 : id 에 해당하는 user, user.posts 가 필요하다.
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public String profile(@PathVariable("id") Long id, Model model){
-        model.addAttribute("user", userService.getFriend(id));
+        model.addAttribute("user", userService.findById(id));
         model.addAttribute("posts", postService.findByFriendId(id));
         return "friends/profile";
     }

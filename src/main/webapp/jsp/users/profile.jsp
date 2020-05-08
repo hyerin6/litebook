@@ -63,7 +63,7 @@
                     <!-- begin tab-content -->
                     <div class="tab-content p-0">
                         <!-- begin #profile-post tab -->
-                        <div class="tab-pane fade active show tab_box1 tab_box on" id="profile-posts">
+                        <div class="tab-pane fade active show tab_box1 tab_box on big-box" id="profile-posts">
                             <!-- begin timeline -->
                             <ul class="timeline">
                                 <li>
@@ -85,7 +85,7 @@
                                     <div class="timeline-icon">
                                         <a href="javascript:;">&nbsp</a>
                                     </div>
-                                    <div class="timeline-body">
+                                    <div class="timeline-body block">
                                         <div class="timeline-header">
                                             <span class="userimage">
                                                 <sec:authentication property="user.profile.filePath" var="path"/>
@@ -133,18 +133,6 @@
                                     <!-- end timeline-body -->
                                 </li>
                                 </c:forEach>
-                                <li>
-                                    <!-- begin timeline-icon -->
-                                    <div class="timeline-icon">
-                                        <a href="javascript:;">&nbsp;</a>
-                                    </div>
-                                    <!-- end timeline-icon -->
-                                    <!-- begin timeline-body -->
-                                    <div class="timeline-body">
-                                        Loading...
-                                    </div>
-                                    <!-- begin timeline-body -->
-                                </li>
                             </ul>
                         </div>
                             <!-- end timeline -->
@@ -156,46 +144,50 @@
                         TIME LINE
                         </div>
                     </div>
-                    <!-- 팔로워 리스트 -->
+                    <!-- 팔로워 리스트 : 나를 팔로우하는 사람들 -->
                     <div class="tab_box3 tab_box">
                         <div class="follower_container">
                             <div class="people-nearby">
                                 <div class="nearby-user">
+                                    <c:forEach var="following" items="${ followings }">
                                     <div class="row">
                                         <div class="col-md-2 col-sm-2">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
+                                            <img src="${following.follower.profile.filePath}" alt="user" class="profile-photo-lg" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
                                         </div>
                                         <div class="col-md-7 col-sm-7">
-                                            <h5><a href="#" class="profile-link">Sophia Page</a></h5>
-                                            <p>Software Engineer</p>
+                                            <h5><a href="#" class="profile-link"> ${following.follower.name} </a></h5>
+                                            <p>${following.follower.email}</p>
                                             <p class="text-muted">500m away</p>
                                         </div>
                                         <div class="col-md-3 col-sm-3">
                                             <button class="btn-gradient blue mini" type="button" style="margin-top: 30px; margin-left: 60px;">FOLLOW</button>
                                         </div>
                                     </div>
+                                    </c:forEach>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- 팔로잉 리스트 -->
+                    <!-- 팔로잉 리스트 : 내가 팔로우하는 사람들 -->
                     <div class="tab_box4 tab_box">
                         <div class="follower_container">
                             <div class="people-nearby">
                                 <div class="nearby-user">
+                                    <c:forEach var="follower" items="${ followers }">
                                     <div class="row">
                                         <div class="col-md-2 col-sm-2">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="user" class="profile-photo-lg" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
+                                            <img src="${follower.following.profile.filePath}" alt="user" class="profile-photo-lg" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
                                         </div>
                                         <div class="col-md-7 col-sm-7">
-                                            <h5><a href="#" class="profile-link">Sophia Page</a></h5>
-                                            <p>Software Engineer</p>
+                                            <h5><a href="#" class="profile-link">${follower.following.name}</a></h5>
+                                            <p>${follower.following.email}</p>
                                             <p class="text-muted">500m away</p>
                                         </div>
                                         <div class="col-md-3 col-sm-3">
                                             <button class="btn-gradient blue mini" type="button" style="margin-top: 30px; margin-left: 60px;">UN FOLLOW</button>
                                         </div>
                                     </div>
+                                    </c:forEach>
                                 </div>
                             </div>
                         </div>
@@ -213,6 +205,7 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script type="text/javascript">
     $('.tab_menu_btn').on('click',function(){
@@ -226,6 +219,7 @@
         $('.tab_box').hide();
         $('.tab_box').eq(idx).show();
     });
+
 </script>
 </body>
 </html>
