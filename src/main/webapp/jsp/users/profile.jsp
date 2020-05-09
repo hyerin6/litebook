@@ -21,12 +21,9 @@
     <div class="row">
         <div class="col-md-12">
             <div id="content" class="content content-full-width">
-                <!-- begin profile -->
                 <div class="profile">
                     <div class="profile-header">
-                        <!-- BEGIN profile-header-cover -->
                         <div class="profile-header-cover"></div>
-                        <!-- END profile-header-cover -->
 
                         <!-- 사용자 기본 프로필 -->
                         <div class="profile-header-content">
@@ -208,6 +205,8 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+    var menu = 0;
+
     $('.tab_menu_btn').on('click',function(){
         //버튼 색 제거,추가
         $('.tab_menu_btn').removeClass('on');
@@ -216,8 +215,49 @@
         //컨텐츠 제거 후 인덱스에 맞는 컨텐츠 노출
         var idx = $('.tab_menu_btn').index(this);
 
+        this.menu = idx;
+
         $('.tab_box').hide();
         $('.tab_box').eq(idx).show();
+    });
+
+    var isLoading = false;
+
+    $(window).scroll(function() {
+        var window_height = window.innerHeight; // 실제 화면 높이
+        if($(window).scrollTop() > 0 ) { // 스크롤을 내리는 중일 때
+            if ($(window).scrollTop() == $(document).height() - window_height) {
+                this.isLoading = true; // 로딩 시작
+                if(menu == 0) { // posts
+                    $.ajax({
+                        type: 'POST',
+                        url: '/infiniteScroll',
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-HTTP-Method-Override": "POST"
+                        },
+                        dataType: 'json',
+                        data: JSON.stringify({
+                        }),
+                        success: function (data) {
+                            alert("success");
+                            this.isLoading = false;
+                        },
+                        error: function(request, status, error){
+                            alert("Loading Fail..");
+                            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" +  "error:" + error);
+                            this.isLoading = false;
+                        }
+                    });
+                } else if(this.menu == 1){ // timeline
+
+                } else if(this.menu == 2){ // follower
+
+                } else if(this.menu == 3){ // following
+
+                }
+            }
+        }
     });
 
 </script>
