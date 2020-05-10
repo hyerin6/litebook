@@ -9,13 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.text.ParseException;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
@@ -32,7 +26,7 @@ public class PostController {
     }
 
     @RequestMapping(value="/posts/insertPost", method = RequestMethod.POST)
-    public String insertPost(@ModelAttribute("insertPostDto") InsertPostDto insertPostDto) throws ParseException {
+    public String insertPost(@ModelAttribute("insertPostDto") InsertPostDto insertPostDto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
 

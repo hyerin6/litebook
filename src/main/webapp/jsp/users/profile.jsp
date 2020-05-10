@@ -62,7 +62,7 @@
                         <!-- begin #profile-post tab -->
                         <div class="tab-pane fade active show tab_box1 tab_box on big-box" id="profile-posts">
                             <!-- begin timeline -->
-                            <ul class="timeline">
+                            <ul class="timeline posts">
                                 <li>
                                     <div class="timeline-body" style="padding-bottom: 10px;">
                                         <div class="form-group">
@@ -130,6 +130,7 @@
                                     <!-- end timeline-body -->
                                 </li>
                                 </c:forEach>
+                                </div>
                             </ul>
                         </div>
                             <!-- end timeline -->
@@ -160,6 +161,7 @@
                                             <button class="btn-gradient blue mini" type="button" style="margin-top: 30px; margin-left: 60px;">FOLLOW</button>
                                         </div>
                                     </div>
+                                    <hr/><br/>
                                     </c:forEach>
                                 </div>
                             </div>
@@ -205,7 +207,10 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+    var lastIdOfPosts = <c:out value="${lastIdOfPosts}" />;
+    var minIdOfPosts = <c:out value="${minIdOfPosts}" />;
     var menu = 0;
+    var isLoading = false;
 
     $('.tab_menu_btn').on('click',function(){
         //버튼 색 제거,추가
@@ -221,32 +226,88 @@
         $('.tab_box').eq(idx).show();
     });
 
-    var isLoading = false;
-
     $(window).scroll(function() {
         var window_height = window.innerHeight; // 실제 화면 높이
-        if($(window).scrollTop() > 0 ) { // 스크롤을 내리는 중일 때
+        if($(window).scrollTop() > 0 && !isLoading && lastIdOfPosts > minIdOfPosts) { // 스크롤을 내리는 중일 때
             if ($(window).scrollTop() == $(document).height() - window_height) {
-                this.isLoading = true; // 로딩 시작
+                isLoading = true; // 로딩 시작
                 if(menu == 0) { // posts
                     $.ajax({
                         type: 'POST',
-                        url: '/infiniteScroll',
+                        url: '/myPosts',
                         headers: {
                             "Content-Type": "application/json",
                             "X-HTTP-Method-Override": "POST"
                         },
                         dataType: 'json',
                         data: JSON.stringify({
+                            lastIdOfPosts: lastIdOfPosts
                         }),
                         success: function (data) {
-                            alert("success");
-                            this.isLoading = false;
+                            console.log(data);
+                            lastIdOfPosts = data.lastIdOfPosts;
+
+                            if(data.posts != null && data.posts.length != 0){
+                                for(let i = 0; i < data.posts.length; ++i){
+                                    $(".posts").append(
+                                        "<li>\n" +
+                                        "<div class=\"timeline-icon\">\n" +
+                                        "<a href=\"javascript:;\">&nbsp</a>\n" +
+                                        "</div>\n" +
+                                        "<div class=\"timeline-body block\">\n" +
+                                        " <div class=\"timeline-header\">\n" +
+                                        "<span class=\"userimage\">\n" +
+                                        "<sec:authentication property="user.profile.filePath" var="path"/>" +
+                                            "<img src=" + "${path}" + " alt=\"\" onerror=\"this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'\">\n" +
+                                        "</span>\n" +
+                                        "<span class=\"username\"><a href=\"javascript:;\">\n" +
+                                        "<sec:authentication property="user.name"/>" +
+                                            "</a> <small></small></span>\n" +
+                                        "<span class=\"date pull-right text-muted\">" + data.posts[i].startDate + "</span>\n" +
+                                        "</div>\n" +
+                                        "<div class=\"timeline-content\">\n" +
+                                        "<p class=\"post\">\n" +
+                                        data.posts[i].mainText +
+                                        "</p>\n" +
+                                        "</div>\n" +
+                                        "<div class=\"timeline-likes\">\n" +
+                                        "<div class=\"stats-right\"> <span class=\"stats-text\">21 Comments</span> </div>\n" +
+                                        "<div class=\"stats\">\n" +
+                                        "<span class=\"fa-stack fa-fw stats-icon\">\n" +
+                                        "<i class=\"fa fa-circle fa-stack-2x text-danger\"></i>\n" +
+                                        "<i class=\"fa fa-heart fa-stack-1x fa-inverse t-plus-1\"></i>\n" +
+                                        "</span>\n" +
+                                        "<span class=\"stats-total\">4.3k</span>\n" +
+                                        "</div>\n" +
+                                        "</div>\n" +
+                                        "<div class=\"timeline-footer\">\n" +
+                                        "<a href=\"javascript:;\" class=\"m-r-15 text-inverse-lighter\" style=\"margin-right: 5px;\"> Like </a> |\n" +
+                                        "<a href=\"javascript:;\" class=\"m-r-15 text-inverse-lighter\" style=\"margin-right: 5px; margin-left: 5px;\"> Comment </a> |\n" +
+                                        "<a href=\"javascript:;\" class=\"m-r-15 text-inverse-lighter\" style=\"margin-left: 5px;\"> Delete </a>\n" +
+                                        "</div>\n" +
+                                        "<div class=\"timeline-comment-box\">\n" +
+                                        "<div class=\"user\"><img class=\"user\" src=\"" + "${path}" + "\" onerror=\"this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'\"></div>\n" +
+                                        "<div class=\"input\">\n" +
+                                        "<form action=\"\">\n" +
+                                        "<div class=\"input-group\">\n" +
+                                        "<input type=\"text\" class=\"form-control rounded-corner\" placeholder=\"Write a comment...\">\n" +
+                                        "<span class=\"input-group-btn p-l-10\">\n" +
+                                        "<button class=\"btn-gradient blue mini\" type=\"button\" style=\"margin-left: 15px;\">Comment</button>\n" +
+                                        "</span>\n" +
+                                        "</div>\n" +
+                                        "</form>\n" +
+                                        "</div>\n" +
+                                        "</div>\n" +
+                                        "</div>\n" +
+                                        "</li>"
+                                    )
+                                }
+                            }
+                            isLoading = false;
                         },
                         error: function(request, status, error){
-                            alert("Loading Fail..");
-                            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" +  "error:" + error);
                             this.isLoading = false;
+                            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" +  "error:" + error);
                         }
                     });
                 } else if(this.menu == 1){ // timeline

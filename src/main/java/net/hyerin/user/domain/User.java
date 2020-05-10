@@ -39,9 +39,6 @@ public class User implements Serializable {
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private Images profile;
 
-    @OneToMany(mappedBy = "user")
-    private List<Post> posts;
-
     @Enumerated(EnumType.STRING)
     private Role userType;
 

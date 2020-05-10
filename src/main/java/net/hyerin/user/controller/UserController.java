@@ -3,16 +3,15 @@ package net.hyerin.user.controller;
 import lombok.extern.slf4j.Slf4j;
 import net.hyerin.email.service.EmailService;
 import net.hyerin.follow.service.FollowService;
+import net.hyerin.post.domain.Post;
 import net.hyerin.post.dto.InsertPostDto;
 import net.hyerin.post.service.PostService;
 import net.hyerin.user.domain.User;
 import net.hyerin.user.dto.UserSigninDto;
 import net.hyerin.user.dto.UserSignupDto;
-import net.hyerin.user.security.CustomUserDetails;
 import net.hyerin.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -114,10 +114,17 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
 
+        List<Post> posts = postService.getPosts(null, user.getId());
+
+        Long lastIdOfPosts = posts.isEmpty() ?
+                null : posts.get(posts.size() - 1).getId();
+
         model.addAttribute("insertPostDto", new InsertPostDto());
-        model.addAttribute("posts", postService.findByUserId(user.getId()));
+        model.addAttribute("posts", posts);
+        model.addAttribute("lastIdOfPosts", lastIdOfPosts);
         model.addAttribute("followers", followService.findByFollowerId(user.getId()));
         model.addAttribute("followings", followService.findByFollowingId(user.getId()));
+        model.addAttribute("minIdOfPosts", postService.getMinIdOfPosts(user.getId()));
         return "users/profile";
     }
 
@@ -126,6 +133,8 @@ public class UserController {
     public String profile(@PathVariable("id") Long id, Model model){
         model.addAttribute("user", userService.findById(id));
         model.addAttribute("posts", postService.findByFriendId(id));
+
+
         return "friends/profile";
     }
 

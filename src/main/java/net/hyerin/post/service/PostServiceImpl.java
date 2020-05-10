@@ -4,38 +4,25 @@ import net.hyerin.post.domain.Post;
 import net.hyerin.post.dto.InsertPostDto;
 import net.hyerin.post.repository.PostRepository;
 import net.hyerin.user.domain.User;
-import net.hyerin.user.security.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class PostServiceImpl implements PostService {
 
-    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
     private PostRepository postRepository;
-    private CustomUserDetailsService userService;
 
-    @Autowired
-    public PostServiceImpl(PostRepository postRepository, CustomUserDetailsService userService){
+    public PostServiceImpl(PostRepository postRepository){
         this.postRepository = postRepository;
-        this.userService = userService;
     }
 
     @Override
-    public void insertPost(InsertPostDto insertPostDto, User user) throws ParseException {
+    public void insertPost(InsertPostDto insertPostDto, User user) {
         // starteDate 저장
-        String now =  formatter.format(new Date());
-        Date startedDate =  formatter.parse(now);
-        insertPostDto.setStartedDate(startedDate);
+        insertPostDto.setStartedDate(new Date());
 
         // Insert post
         Post post = insertPostDto.toEntity(user);
@@ -44,12 +31,29 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> findByUserId(Long userId){
-        return postRepository.findByUserId(userId);
+        return postRepository.findTop5ByUser_IdOrderByStartedDateDesc(userId);
     }
 
     @Override
     public List<Post> findByFriendId(Long userId){
-        return postRepository.findByUserId(userId);
+        return postRepository.findTop5ByUser_IdOrderByStartedDateDesc(userId);
+    }
+
+    @Override
+    public List<Post> getPosts(Long postId, Long userId) {
+        final List<Post> posts = get(postId, userId);
+        return posts;
+    }
+
+    private List<Post> get(Long id, Long userId) {
+        return id == null ?
+                this.postRepository.findTop5ByUser_IdOrderByStartedDateDesc(userId) :
+                this.postRepository.findTop5ByUser_IdAndIdLessThanOrderByIdDescStartedDateDesc(userId, id);
+    }
+
+    @Override
+    public Long getMinIdOfPosts(Long userId){
+        return postRepository.findMinIdByUserId(userId);
     }
 
 }
