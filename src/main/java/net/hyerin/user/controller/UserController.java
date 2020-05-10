@@ -133,8 +133,6 @@ public class UserController {
     public String profile(@PathVariable("id") Long id, Model model){
         model.addAttribute("user", userService.findById(id));
         model.addAttribute("posts", postService.findByFriendId(id));
-
-
         return "friends/profile";
     }
 
