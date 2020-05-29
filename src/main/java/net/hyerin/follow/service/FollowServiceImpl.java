@@ -1,33 +1,36 @@
 package net.hyerin.follow.service;
 
-import net.hyerin.follow.domain.Follow;
-import net.hyerin.follow.repository.FollowRepository;
-import net.hyerin.user.domain.User;
-import net.hyerin.user.service.UserService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import net.hyerin.follow.domain.Follow;
+import net.hyerin.follow.repository.FollowRepository;
+import net.hyerin.user.domain.User;
+import net.hyerin.user.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class FollowServiceImpl implements FollowService {
 
     private FollowRepository followRepository;
     private UserService userService;
 
-    @Autowired
     public FollowServiceImpl(FollowRepository followRepository, UserService userService){
         this.followRepository = followRepository;
         this.userService = userService;
     }
 
-    public Follow follow(Long followingId){
-        // 팔로우하려는 사용자
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        User follower = userService.findByEmail(email);
+    public Follow follow(User follower, Long followingId){
+        // 이미 팔로우한 친구는 insert 되지 않는다.
+        if(followRepository.findByFollowerIdAndFollowingId(follower.getId(), followingId) != null)
+            return null;
 
         Follow follow = Follow.builder()
                 .follower(follower)
@@ -45,6 +48,12 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public List<Follow> findByFollowingId(Long followingId){
         return followRepository.findByFollowingId(followingId);
+    }
+
+    @Override
+    @Transactional
+    public void deleteByFollowerId(Long followerId, Long followingId){
+        followRepository.deleteByFollowerIdAndFollowingId(followerId, followingId);
     }
 
 }

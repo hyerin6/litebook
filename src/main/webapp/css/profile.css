@@ -735,6 +735,10 @@ select.form-control:not([size]):not([multiple]) {
     margin-bottom: 20px;
 }
 
+.followers{
+    padding: 10px 10px 25px 80px;
+}
+
 img.profile-photo-lg{
     height: 80px;
     width: 80px;
