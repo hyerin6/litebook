@@ -17,7 +17,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    //    private MyAuthenticationProvider myAuthenticationProvider;
+    // private MyAuthenticationProvider myAuthenticationProvider;
 
     private MyAuthenticationFailureHandler myAuthenticationFailureHandler;
 

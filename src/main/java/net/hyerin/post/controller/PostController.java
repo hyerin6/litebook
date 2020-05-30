@@ -30,6 +30,7 @@ public class PostController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
 
+        log.info("post mainText : " + insertPostDto.getMainText());
         postService.insertPost(insertPostDto, user);
         return "redirect:/users/profile";
     }

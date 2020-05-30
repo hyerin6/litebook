@@ -122,8 +122,8 @@ public class UserController {
         model.addAttribute("insertPostDto", new InsertPostDto());
         model.addAttribute("posts", posts);
         model.addAttribute("lastIdOfPosts", lastIdOfPosts);
-        model.addAttribute("followers", followService.findByFollowerId(user.getId()));
-        model.addAttribute("followings", followService.findByFollowingId(user.getId()));
+        // model.addAttribute("followers", followService.findByFollowerId(user.getId()));
+        // model.addAttribute("followings", followService.findByFollowingId(user.getId()));
         model.addAttribute("minIdOfPosts", postService.getMinIdOfPosts(user.getId()));
         return "users/profile";
     }

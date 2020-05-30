@@ -9,6 +9,7 @@ import lombok.Setter;
 import net.hyerin.post.domain.Post;
 import net.hyerin.user.domain.User;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
@@ -20,6 +21,7 @@ import java.util.Date;
 public class InsertPostDto {
 
     @NotBlank(message = "내용을 입력하세요.")
+    @Column(length = 3000)
     private String mainText;
 
     private Date startedDate;

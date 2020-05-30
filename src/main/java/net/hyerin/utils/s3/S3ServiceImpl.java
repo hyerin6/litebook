@@ -62,7 +62,7 @@ public class S3ServiceImpl implements S3Service{
     @Override
     public String userProfileUpload(MultipartFile file) throws IOException {
         String fileName = file.getOriginalFilename();
-        String path = bucket + "/profile";
+        String path = bucket + "/post";
 
         s3Client.putObject(new PutObjectRequest(path, fileName, file.getInputStream(), null)
                 .withCannedAcl(CannedAccessControlList.PublicRead));

@@ -29,6 +29,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 3000)
     private String mainText;
 
     @ManyToOne

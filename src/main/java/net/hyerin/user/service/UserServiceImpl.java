@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService{
         User user = userSignupDto.toEntityWithPasswordEncoder(EncryptionUtils.encryptSHA256(userSignupDto.getPassword1()));
         emailService.sendMail(user.getEmail());
 
-        if(userSignupDto.getProfile() != null) {
+        if(!userSignupDto.getProfile().isEmpty()) {
             String path = s3Service.userProfileUpload(userSignupDto.getProfile()); // aws s3 이미지 저장
             Images profile = imagesService.saveUserProfile(path); // Images 테이블에 저장
             user.setProfile(profile); // user에 profile
@@ -94,5 +94,22 @@ public class UserServiceImpl implements UserService{
     public User findByEmail(String email){
         return userRepository.findOneByEmail(email);
     }
+
+    // @Override
+    // public List<User> getUsers(String name) {
+    //     final List<User> users = get(postId, userId);
+    //     return users;
+    // }
+    //
+    // private List<Post> get(String name, Long id) {
+    //     return id == null ?
+    //         this.postRepository.findTop5ByUser_IdOrderByStartedDateDesc(userId) :
+    //         this.postRepository.findTop5ByUser_IdAndIdLessThanOrderByIdDescStartedDateDesc(userId, id);
+    // }
+    //
+    // @Override
+    // public Long getMinIdOfPosts(Long userId){
+    //     return postRepository.findMinIdByUserId(userId);
+    // }
 
 }

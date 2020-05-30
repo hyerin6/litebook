@@ -2,9 +2,8 @@ package net.hyerin.post.controller;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.hyerin.post.controller.PostAjaxController.PostsResponse;
+
 import net.hyerin.post.domain.Post;
 import net.hyerin.post.service.PostService;
 import net.hyerin.user.domain.User;
@@ -14,21 +13,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
-public class PostAjaxController {
+public class PostApiController {
 
     private PostService postService;
 
     private UserService userService;
 
-    @Autowired
-    public PostAjaxController(PostService postService, UserService userService){
+    public PostApiController(PostService postService, UserService userService){
         this.postService = postService;
         this.userService = userService;
     }
