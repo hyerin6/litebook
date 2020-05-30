@@ -37,7 +37,7 @@ public class FollowController {
         User follower = userService.findByEmail(email);
 
         followService.follow(follower, followingId);
-        return "redirect:/users/"+followingId;
+        return "redirect:/followings";
     }
 
     @GetMapping(value = "/follows/delete/{id}")
@@ -53,6 +53,7 @@ public class FollowController {
     public String followers(Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
+        model.addAttribute("user", userService.findByEmail(user.getEmail()));
 
         List<Follow> followings = followService.findByFollowingId(user.getId());
 
@@ -68,6 +69,7 @@ public class FollowController {
     public String followings(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
+        model.addAttribute("user", userService.findByEmail(user.getEmail()));
 
         List<Follow> followers = followService.findByFollowerId(user.getId());
 

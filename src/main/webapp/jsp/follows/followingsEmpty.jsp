@@ -58,23 +58,12 @@
                 <div class="follower_container">
                     <div class="people-nearby">
                         <div class="nearby-user">
-                            <c:forEach var="follower" items="${ followers }">
-                                <div class="row followers">
-                                    <div class="col-md-2 col-sm-2">
-                                        <img src="${follower.following.profile.filePath}" alt="user" class="profile-photo-lg" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
-                                    </div>
-                                    <div class="col-md-7 col-sm-7">
-                                        <h5><a href="/users/${follower.following.id}" class="profile-link"> ${follower.following.name} </a></h5>
-                                        <p>${follower.following.email}</p>
-                                    </div>
-                                    <div class="col-md-3 col-sm-3">
-                                        <a href="/follows/delete/${follower.following.id}" class="btn-gradient blue mini" style="margin-top: 30px; margin-left: 60px;">DELETE</a>
-                                    </div>
-                                </div>
-                                <hr/><br/>
-                            </c:forEach>
+                            <div class="row followers">
+                                <h1> 아직 팔로우하는 친구들이 없네요 ;-) 검색해보세요 ! </h1>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

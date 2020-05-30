@@ -2,10 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:url var="R" value="/" />
 <link rel="stylesheet" href="${R}css/profile.css">
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="utf-8">
     <title>litebook</title>
@@ -16,40 +17,43 @@
 <body>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
-<div class="row">
-<div class="col-md-12">
-<div id="content" class="content content-full-width">
-<div class="profile">
-    <div class="profile-header">
-        <div class="profile-header-cover"></div>
-        <!-- 사용자 기본 프로필 -->
-        <div class="profile-header-content">
-            <!-- 프로필 사진 -->
-            <div class="profile-header-img">
-                <sec:authentication property="user.profile.filePath" var="path"/>
-                <img src="${path}" alt="" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
-            </div>
-            <div class="profile-header-info"> <!-- 이름, 이메일 -->
-                <h4 class="m-t-10 m-b-5"><sec:authentication property="user.name" /></h4>
-                <p class="m-b-10"><sec:authentication property="user.email" /></p>
-                <sec:authorize access="authenticated">
-                    <a href="#" class="btn-gradient blue mini">Edit Profile</a>
-                </sec:authorize>
-            </div>
-        </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="content" class="content content-full-width">
+                <div class="profile">
+                    <div class="profile-header">
+                        <div class="profile-header-cover"></div>
+                        <!-- 사용자 기본 프로필 -->
+                        <div class="profile-header-content">
+                            <!-- 프로필 사진 -->
+                            <div class="profile-header-img">
+                                <sec:authentication property="user.profile.filePath" var="path"/>
+                                <img src="${path}" alt="" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
+                            </div>
+                            <div class="profile-header-info"> <!-- 이름, 이메일 -->
+                                <h4 class="m-t-10 m-b-5"><sec:authentication property="user.name" /></h4>
+                                <p class="m-b-10"><sec:authentication property="user.email" /></p>
+                                <sec:authorize access="authenticated">
+                                    <a href="#" class="btn-gradient blue mini">Edit</a>
+                                </sec:authorize>
+                                <sec:authorize access="authenticated">
+                                    <a href="#" class="btn-gradient blue mini" style="margin-left: 5px;">logout</a>
+                                </sec:authorize>
+                            </div>
+                        </div>
 
-        <!-- 네비게이션바 -->
-        <div class="main_nav tab_wrap">
-            <ul class="profile-header-tab nav nav-tabs center tab_menu_container">
-                <li class="nav-item tab_menu_btn"><a href="/users/profile" target="_self" class="tab_menu_btn1 tab_menu_btn1">POSTS</a></li>
-                <li class="nav-item tab_menu_btn"><a href="#" target="_self" class="tab_menu_btn2">TIME LINE</a></li>
-                <li class="nav-item tab_menu_btn on"><a href="/followers" target="_self" class="tab_menu_btn3 on active show">FOLLOWER</a></li>
-                <li class="nav-item tab_menu_btn"><a href="/followings" target="_self" class="tab_menu_btn4">FOLLOWING</a></li>
-                <li class="nav-item tab_menu_btn"><a href="#profile-search" target="_self" class="tab_menu_btn5">SEARCH</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
+                        <!-- 네비게이션바 -->
+                        <div class="main_nav tab_wrap">
+                            <ul class="profile-header-tab nav nav-tabs center tab_menu_container">
+                                <li class="nav-item tab_menu_btn"><a href="/users/profile" target="_self" class="tab_menu_btn1 tab_menu_btn1">POSTS</a></li>
+                                <li class="nav-item tab_menu_btn"><a href="#" target="_self" class="tab_menu_btn2">TIME LINE</a></li>
+                                <li class="nav-item tab_menu_btn on"><a href="/followers" target="_self" class="tab_menu_btn3 on active show">FOLLOWER</a></li>
+                                <li class="nav-item tab_menu_btn"><a href="/followings" target="_self" class="tab_menu_btn4">FOLLOWING</a></li>
+                                <li class="nav-item tab_menu_btn"><a href="#profile-search" target="_self" class="tab_menu_btn5">SEARCH</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 <!-- 팔로워 리스트 : 나를 팔로우하는 사람들 -->
 <div class="follower_container">
     <div class="people-nearby">

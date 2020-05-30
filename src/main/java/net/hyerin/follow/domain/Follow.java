@@ -28,10 +28,12 @@ public class Follow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 나를 팔로우하는 사람
     @ManyToOne
     @JoinColumn(name = "follower_id", referencedColumnName = "id")
     private User follower;
 
+    // 내가 팔로우하는 사람
     @ManyToOne
     @JoinColumn(name = "following_id", referencedColumnName = "id")
     private User following;

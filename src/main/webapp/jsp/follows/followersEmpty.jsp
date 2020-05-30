@@ -47,8 +47,8 @@
                             <ul class="profile-header-tab nav nav-tabs center tab_menu_container">
                                 <li class="nav-item tab_menu_btn"><a href="/users/profile" target="_self" class="tab_menu_btn1 tab_menu_btn1">POSTS</a></li>
                                 <li class="nav-item tab_menu_btn"><a href="#" target="_self" class="tab_menu_btn2">TIME LINE</a></li>
-                                <li class="nav-item tab_menu_btn"><a href="/followers" target="_self" class="tab_menu_btn3">FOLLOWER</a></li>
-                                <li class="nav-item tab_menu_btn on"><a href="/followings" target="_self" class="tab_menu_btn4 on active show">FOLLOWING</a></li>
+                                <li class="nav-item tab_menu_btn on"><a href="/followers" target="_self" class="tab_menu_btn3 on active show">FOLLOWER</a></li>
+                                <li class="nav-item tab_menu_btn"><a href="/followings" target="_self" class="tab_menu_btn4">FOLLOWING</a></li>
                                 <li class="nav-item tab_menu_btn"><a href="#profile-search" target="_self" class="tab_menu_btn5">SEARCH</a></li>
                             </ul>
                         </div>
@@ -58,23 +58,15 @@
                 <div class="follower_container">
                     <div class="people-nearby">
                         <div class="nearby-user">
-                            <c:forEach var="follower" items="${ followers }">
+                            <div class="row followers">
+                                <h1> 아직 나를 팔로우하는 친구가 없네요. </h1>
+                            </div>
                                 <div class="row followers">
-                                    <div class="col-md-2 col-sm-2">
-                                        <img src="${follower.following.profile.filePath}" alt="user" class="profile-photo-lg" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
-                                    </div>
-                                    <div class="col-md-7 col-sm-7">
-                                        <h5><a href="/users/${follower.following.id}" class="profile-link"> ${follower.following.name} </a></h5>
-                                        <p>${follower.following.email}</p>
-                                    </div>
-                                    <div class="col-md-3 col-sm-3">
-                                        <a href="/follows/delete/${follower.following.id}" class="btn-gradient blue mini" style="margin-top: 30px; margin-left: 60px;">DELETE</a>
-                                    </div>
+                                <h1> 더 많은 글을 작성해보세요 ! </h1>
                                 </div>
-                                <hr/><br/>
-                            </c:forEach>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
