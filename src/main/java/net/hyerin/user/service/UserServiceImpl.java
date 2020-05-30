@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.hyerin.email.service.EmailService;
 import net.hyerin.images.domain.Images;
 import net.hyerin.images.service.ImagesService;
+import net.hyerin.post.domain.Post;
 import net.hyerin.user.domain.User;
 import net.hyerin.user.dto.UserSignupDto;
 import net.hyerin.user.repository.UserRepository;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+
+import java.util.List;
 
 import static net.hyerin.user.domain.Role.IS_AUTHENTICATED_FULLY;
 
@@ -80,6 +83,16 @@ public class UserServiceImpl implements UserService{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public User findById(Long id){
+        return userRepository.findById(id).get();
+    }
+
+    @Override
+    public User findByEmail(String email){
+        return userRepository.findOneByEmail(email);
     }
 
 }

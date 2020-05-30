@@ -12,4 +12,6 @@ public interface UserService {
     public void signup(UserSignupDto userSignupDto) throws Exception;
     public void updateUserType(String email);
     public boolean hasErrors(UserSignupDto userSignupDto, BindingResult bindingResult);
+    public User findById(Long id);
+    public User findByEmail(String email);
 }

@@ -1,6 +1,11 @@
 package net.hyerin.user.dto;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import net.hyerin.user.domain.Role;
 import net.hyerin.user.domain.User;
 import org.springframework.web.multipart.MultipartFile;
