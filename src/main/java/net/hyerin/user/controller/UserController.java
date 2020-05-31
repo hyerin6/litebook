@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.hyerin.email.service.EmailService;
 import net.hyerin.follow.service.FollowService;
 import net.hyerin.post.domain.Post;
-import net.hyerin.post.dto.InsertPostDto;
+import net.hyerin.post.request.InsertPostDto;
 import net.hyerin.post.service.PostService;
 import net.hyerin.user.domain.User;
 import net.hyerin.user.dto.UserSigninDto;
@@ -122,8 +122,6 @@ public class UserController {
         model.addAttribute("insertPostDto", new InsertPostDto());
         model.addAttribute("posts", posts);
         model.addAttribute("lastIdOfPosts", lastIdOfPosts);
-        // model.addAttribute("followers", followService.findByFollowerId(user.getId()));
-        // model.addAttribute("followings", followService.findByFollowingId(user.getId()));
         model.addAttribute("minIdOfPosts", postService.getMinIdOfPosts(user.getId()));
         return "users/profile";
     }
@@ -131,8 +129,20 @@ public class UserController {
     // 다른 사용자 프로필 : id 에 해당하는 user, user.posts 가 필요하다.
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public String profile(@PathVariable("id") Long id, Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User loginUser = userService.findByEmail(auth.getName());
+
+        List<Post> posts = postService.getPosts(null, id);
+
+        Long lastIdOfPosts = posts.isEmpty() ?
+            new Long(0) : posts.get(posts.size() - 1).getId();
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("lastIdOfPosts", lastIdOfPosts);
+        model.addAttribute("minIdOfPosts", postService.getMinIdOfPosts(id));
+        model.addAttribute("loginUser", userService.findByEmail(loginUser.getEmail()));
         model.addAttribute("user", userService.findById(id));
-        model.addAttribute("posts", postService.findByFriendId(id));
+
         return "friends/profile";
     }
 

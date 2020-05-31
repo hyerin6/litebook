@@ -1,10 +1,10 @@
 package net.hyerin.post.service;
 
 import net.hyerin.post.domain.Post;
-import net.hyerin.post.dto.InsertPostDto;
+import net.hyerin.post.request.InsertPostDto;
 import net.hyerin.post.repository.PostRepository;
 import net.hyerin.user.domain.User;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -53,7 +53,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Long getMinIdOfPosts(Long userId){
-        return postRepository.findMinIdByUserId(userId);
+        Long minId = postRepository.findMinIdByUserId(userId);
+        return minId == null ? new Long(0) : minId;
     }
 
 }

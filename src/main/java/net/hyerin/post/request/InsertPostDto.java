@@ -1,4 +1,4 @@
-package net.hyerin.post.dto;
+package net.hyerin.post.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

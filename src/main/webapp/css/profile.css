@@ -500,7 +500,7 @@ select.form-control:not([size]):not([multiple]) {
     margin-right: 17%;
     background: #fff;
     position: relative;
-    padding: 20px 25px;
+    padding: 50px 25px;
     border-radius: 6px
 }
 
@@ -557,6 +557,8 @@ select.form-control:not([size]):not([multiple]) {
 .timeline-content {
     letter-spacing: .25px;
     line-height: 18px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     font-size: 13px
 }
 
@@ -568,13 +570,13 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 .timeline-title {
-    margin-top: 0
+    margin-top: 0px;
 }
 
 .timeline-footer {
     background: #fff;
     border-top: 1px solid #e2e7ec;
-    padding-top: 15px
+    padding-top: 15px;
 }
 
 .timeline-footer a:not(.btn) {
@@ -769,3 +771,113 @@ button {
     display:block;
 }
 
+.main_nav{
+    padding-top: 10px;
+    text-align: center;
+}
+
+.post{
+    font-size: 1.3em;
+}
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%; /* Could be more or less, depending on screen size */
+}
+
+.people-nearby .google-maps{
+    background: #f8f8f8;
+    border-radius: 4px;
+    border: 1px solid #f1f2f2;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.people-nearby .google-maps .map{
+    height: 300px;
+    width: 100%;
+    border: none;
+}
+
+.people-nearby .nearby-user{
+    padding: 20px 0;
+    margin-bottom: 20px;
+}
+
+img.profile-photo-lg{
+    height: 80px;
+    width: 80px;
+    border-radius: 10%;
+}
+
+button {
+    background:none;
+    border:0;
+    outline:0;
+    cursor:pointer;
+}
+.tab_menu_container {
+    display: flex;
+}
+.tab_menu_btn {
+    transition:0.3s all;
+}
+.tab_menu_btn.on {
+    font-weight:700;
+}
+.tab_menu_btn:hover {
+}
+.tab_box {
+    display:none;
+}
+.tab_box.on {
+    display:block;
+}
+
+.modify-button{
+    float: right;
+}
+
+.center-img{
+    width: 100%;
+    text-align: center
+}
+
+.max-small {
+    width: 100%;
+    max-width: 500px;
+    padding-left: 50px;
+}
+
+.empty-img {
+    display: block;
+    align-items: center;
+    margin-right: auto;
+    margin-left: auto;
+    width: auto; height: auto;
+    max-width: 1000px;
+    max-height: 1000px;
+}
+
+a {
+    display: block;
+}

@@ -34,7 +34,7 @@
                     <h4 class="m-t-10 m-b-5"><sec:authentication property="user.name" /></h4>
                     <p class="m-b-10"><sec:authentication property="user.email" /></p>
                     <sec:authorize access="authenticated">
-                        <a href="#" class="btn-gradient blue mini">Edit</a>
+                        <a href="#" class="btn-gradient blue mini">settings</a>
                     </sec:authorize>
                     <sec:authorize access="authenticated">
                         <a href="#" class="btn-gradient blue mini" style="margin-left: 5px;">logout</a>
@@ -63,8 +63,8 @@
                             <div class="timeline-body" style="padding-bottom: 10px;">
                                 <div class="form-group">
                                     <div class="panel-body timeline-comment-box" style="padding-top: 30px;">
-                                        <form:form method="post" modelAttribute="insertPostDto" action="/posts/insertPost">
-                                            <form:textarea path="mainText" class="form-control" placeholder="What are you thinking?" />
+                                        <form:form method="post" modelAttribute="insertPostDto" action="/posts">
+                                            <form:textarea path="mainText" class="form-control" rows="6" placeholder="What are you thinking?" />
                                             <div class="mar-top clearfix">
                                                 <form:button class="btn-gradient blue mini" type="submit" style="float: right; margin-top: 15px;">Share</form:button>
                                             </div>
@@ -73,7 +73,7 @@
                                 </div>
                             </div>
                         </li>
-                        <c:forEach var="post" items="${ posts }">
+                        <c:forEach var="post" items="${ posts }" varStatus="vs">
                         <li>
                             <div class="timeline-icon">
                                 <a href="javascript:;">&nbsp</a>
@@ -95,29 +95,43 @@
                                     <p class="post">${post.mainText}</p>
                                 </div>
                                 <div class="timeline-likes">
-                                    <div class="stats-right"> <span class="stats-text">21 Comments</span> </div>
                                     <div class="stats">
+                                        <a href="#">
                                         <span class="fa-stack fa-fw stats-icon">
                                             <i class="fa fa-circle fa-stack-2x text-danger"></i>
                                             <i class="fa fa-heart fa-stack-1x fa-inverse t-plus-1"></i>
                                         </span>
+                                        </a>
                                         <span class="stats-total">4.3k</span>
                                     </div>
                                 </div>
                                 <div class="timeline-footer">
-                                    <a href="javascript:;" class="m-r-15 text-inverse-lighter" style="margin-right: 5px;"> Like </a> |
-                                    <a href="javascript:;" class="m-r-15 text-inverse-lighter" style="margin-right: 5px; margin-left: 5px;"> Comment </a> |
-                                    <a href="javascript:;" class="m-r-15 text-inverse-lighter" style="margin-left: 5px;"> Delete </a>
-                                </div>
-                                <div class="timeline-comment-box">
-                                    <div class="user"><img class="user" src="${path}" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'"></div>
-                                    <div class="input">
-                                        <form action="">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control rounded-corner" placeholder="Write a comment...">
-                                                <span class="input-group-btn p-l-10">
-                                                    <button class="btn-gradient blue mini" type="button" style="margin-left: 15px;">Comment</button>
-                                                </span>
+                                    <div style="float: right;">
+                                        <a style="color: aliceblue" href="/posts/${post.id}" class="btn-gradient blue mini">Delete</a>
+                                        <button class="btn-gradient blue mini" type="button" id="viewDetailButton${vs.index}" data-target="#layerpop${vs.index}" data-toggle="modal">update</button>
+                                        <form method="PATCH">
+                                            <div class="modal fade" id="layerpop${vs.index}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content" id="layerpop${vs.index}">
+                                                        <div class="modal-header">
+                                                            <div class="modal-title">
+                                                                <h3 style="margin-bottom: 20px;">update</h3>
+                                                                <p>
+                                                                    수정을 원한다면 입력 후 '완료'를 누르세요. <br/>
+                                                                    '취소'를 누르면 이전 페이지로 돌아갑니다.
+                                                                </p>
+                                                            </div>
+                                                            <button type="button" class="close" data-dismiss="modal">×</button>
+                                                        </div>
+                                                        <div class="modal-body"><br/>
+                                                            <textarea id="mainText${vs.index}" path="content" class="form-control" rows="4">${post.mainText}</textarea><br/>
+                                                        </div>
+                                                        <div class="modal-footer" id="layerpop${vs.index}">
+                                                            <input id="layerpop${vs.index}" class="btn-gradient blue mini" type="button" data-dismiss="modal" onClick="update_btn(${post.id}, $('#mainText'.concat(${vs.index})).val());" value="완료" style="float: right; margin-top: 15px;"/>
+                                                            <button type="button" class="btn-gradient blue mini" data-dismiss="modal" style="margin-top: 14px; margin-left: 10px;">취소</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -191,56 +205,57 @@
                                     let sd = formatDate(data.posts[i].startedDate);
 
                                     $(".posts").append(
-                                        "<li>\n" +
-                                        "<div class=\"timeline-icon\">\n" +
-                                        "<a href=\"javascript:;\">&nbsp</a>\n" +
-                                        "</div>\n" +
-                                        "<div class=\"timeline-body block\">\n" +
-                                        " <div class=\"timeline-header\">\n" +
-                                        "<span class=\"userimage\">\n" +
-                                        "<sec:authentication property="user.profile.filePath" var="path"/>" +
-                                        "<img src=" + "${path}" + " alt=\"\" onerror=\"this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'\">\n" +
-                                        "</span>\n" +
-                                        "<span class=\"username\"><a href=\"javascript:;\">\n" +
-                                        "<sec:authentication property="user.name"/>" +
-                                        "</a> <small></small></span>\n" +
-                                        "<span class=\"date pull-right text-muted\">" + sd + "</span>\n" +
-                                        "</div>\n" +
-                                        "<div class=\"timeline-content\">\n" +
-                                        "<p class=\"post\">\n" +
-                                        data.posts[i].mainText +
-                                        "</p>\n" +
-                                        "</div>\n" +
-                                        "<div class=\"timeline-likes\">\n" +
-                                        "<div class=\"stats-right\"> <span class=\"stats-text\">21 Comments</span> </div>\n" +
-                                        "<div class=\"stats\">\n" +
-                                        "<span class=\"fa-stack fa-fw stats-icon\">\n" +
-                                        "<i class=\"fa fa-circle fa-stack-2x text-danger\"></i>\n" +
-                                        "<i class=\"fa fa-heart fa-stack-1x fa-inverse t-plus-1\"></i>\n" +
-                                        "</span>\n" +
-                                        "<span class=\"stats-total\">4.3k</span>\n" +
-                                        "</div>\n" +
-                                        "</div>\n" +
-                                        "<div class=\"timeline-footer\">\n" +
-                                        "<a href=\"javascript:;\" class=\"m-r-15 text-inverse-lighter\" style=\"margin-right: 5px;\"> Like </a> |\n" +
-                                        "<a href=\"javascript:;\" class=\"m-r-15 text-inverse-lighter\" style=\"margin-right: 5px; margin-left: 5px;\"> Comment </a> |\n" +
-                                        "<a href=\"javascript:;\" class=\"m-r-15 text-inverse-lighter\" style=\"margin-left: 5px;\"> Delete </a>\n" +
-                                        "</div>\n" +
-                                        "<div class=\"timeline-comment-box\">\n" +
-                                        "<div class=\"user\"><img class=\"user\" src=\"" + "${path}" + "\" onerror=\"this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'\"></div>\n" +
-                                        "<div class=\"input\">\n" +
-                                        "<form action=\"\">\n" +
-                                        "<div class=\"input-group\">\n" +
-                                        "<input type=\"text\" class=\"form-control rounded-corner\" placeholder=\"Write a comment...\">\n" +
-                                        "<span class=\"input-group-btn p-l-10\">\n" +
-                                        "<button class=\"btn-gradient blue mini\" type=\"button\" style=\"margin-left: 15px;\">Comment</button>\n" +
-                                        "</span>\n" +
-                                        "</div>\n" +
-                                        "</form>\n" +
-                                        "</div>\n" +
-                                        "</div>\n" +
-                                        "</div>\n" +
-                                        "</li>"
+                                        <%-- 수정 & 삭제 기능 완성 후 구현 --%>
+                                        <%--"<li>\n" +--%>
+                                        <%--"<div class=\"timeline-icon\">\n" +--%>
+                                        <%--"<a href=\"javascript:;\">&nbsp</a>\n" +--%>
+                                        <%--"</div>\n" +--%>
+                                        <%--"<div class=\"timeline-body block\">\n" +--%>
+                                        <%--" <div class=\"timeline-header\">\n" +--%>
+                                        <%--"<span class=\"userimage\">\n" +--%>
+                                        <%--"<sec:authentication property="user.profile.filePath" var="path"/>" +--%>
+                                        <%--"<img src=" + "${path}" + " alt=\"\" onerror=\"this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'\">\n" +--%>
+                                        <%--"</span>\n" +--%>
+                                        <%--"<span class=\"username\"><a href=\"javascript:;\">\n" +--%>
+                                        <%--"<sec:authentication property="user.name"/>" +--%>
+                                        <%--"</a> <small></small></span>\n" +--%>
+                                        <%--"<span class=\"date pull-right text-muted\">" + sd + "</span>\n" +--%>
+                                        <%--"</div>\n" +--%>
+                                        <%--"<div class=\"timeline-content\">\n" +--%>
+                                        <%--"<p class=\"post\">\n" +--%>
+                                        <%--data.posts[i].mainText +--%>
+                                        <%--"</p>\n" +--%>
+                                        <%--"</div>\n" +--%>
+                                        <%--"<div class=\"timeline-likes\">\n" +--%>
+                                        <%--"<div class=\"stats-right\"> <span class=\"stats-text\">21 Comments</span> </div>\n" +--%>
+                                        <%--"<div class=\"stats\">\n" +--%>
+                                        <%--"<span class=\"fa-stack fa-fw stats-icon\">\n" +--%>
+                                        <%--"<i class=\"fa fa-circle fa-stack-2x text-danger\"></i>\n" +--%>
+                                        <%--"<i class=\"fa fa-heart fa-stack-1x fa-inverse t-plus-1\"></i>\n" +--%>
+                                        <%--"</span>\n" +--%>
+                                        <%--"<span class=\"stats-total\">4.3k</span>\n" +--%>
+                                        <%--"</div>\n" +--%>
+                                        <%--"</div>\n" +--%>
+                                        <%--"<div class=\"timeline-footer\">\n" +--%>
+                                        <%--"<a href=\"javascript:;\" class=\"m-r-15 text-inverse-lighter\" style=\"margin-right: 5px;\"> Like </a> |\n" +--%>
+                                        <%--"<a href=\"javascript:;\" class=\"m-r-15 text-inverse-lighter\" style=\"margin-right: 5px; margin-left: 5px;\"> Comment </a> |\n" +--%>
+                                        <%--"<a href=\"javascript:;\" class=\"m-r-15 text-inverse-lighter\" style=\"margin-left: 5px;\"> Delete </a>\n" +--%>
+                                        <%--"</div>\n" +--%>
+                                        <%--"<div class=\"timeline-comment-box\">\n" +--%>
+                                        <%--"<div class=\"user\"><img class=\"user\" src=\"" + "${path}" + "\" onerror=\"this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'\"></div>\n" +--%>
+                                        <%--"<div class=\"input\">\n" +--%>
+                                        <%--"<form action=\"\">\n" +--%>
+                                        <%--"<div class=\"input-group\">\n" +--%>
+                                        <%--"<input type=\"text\" class=\"form-control rounded-corner\" placeholder=\"Write a comment...\">\n" +--%>
+                                        <%--"<span class=\"input-group-btn p-l-10\">\n" +--%>
+                                        <%--"<button class=\"btn-gradient blue mini\" type=\"button\" style=\"margin-left: 15px;\">Comment</button>\n" +--%>
+                                        <%--"</span>\n" +--%>
+                                        <%--"</div>\n" +--%>
+                                        <%--"</form>\n" +--%>
+                                        <%--"</div>\n" +--%>
+                                        <%--"</div>\n" +--%>
+                                        <%--"</div>\n" +--%>
+                                        <%--"</li>"--%>
                                     )
                                 }
                             }

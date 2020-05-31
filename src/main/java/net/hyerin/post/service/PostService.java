@@ -1,9 +1,8 @@
 package net.hyerin.post.service;
 
 import net.hyerin.post.domain.Post;
-import net.hyerin.post.dto.InsertPostDto;
+import net.hyerin.post.request.InsertPostDto;
 import net.hyerin.user.domain.User;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 

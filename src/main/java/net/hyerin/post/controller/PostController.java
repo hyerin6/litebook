@@ -1,7 +1,7 @@
 package net.hyerin.post.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import net.hyerin.post.dto.InsertPostDto;
+import net.hyerin.post.request.InsertPostDto;
 import net.hyerin.post.service.PostService;
 import net.hyerin.user.domain.User;
 import net.hyerin.user.service.UserService;
@@ -25,13 +25,22 @@ public class PostController {
         this.userService = userService;
     }
 
-    @RequestMapping(value="/posts/insertPost", method = RequestMethod.POST)
+    @PostMapping(value="/posts")
     public String insertPost(@ModelAttribute("insertPostDto") InsertPostDto insertPostDto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
 
-        log.info("post mainText : " + insertPostDto.getMainText());
         postService.insertPost(insertPostDto, user);
+        return "redirect:/users/profile";
+    }
+
+    @GetMapping("/posts/{id}")
+    public String deletePost(@PathVariable("id") Long postId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(auth.getName());
+
+        // 삭제 기능 추가
+
         return "redirect:/users/profile";
     }
 
