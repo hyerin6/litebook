@@ -17,7 +17,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    // private MyAuthenticationProvider myAuthenticationProvider;
 
     private MyAuthenticationFailureHandler myAuthenticationFailureHandler;
 
@@ -28,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public SecurityConfig(EmailPasswordAuthManager authManager,
                           MyAuthenticationFailureHandler myAuthenticationFailureHandler,
-                          CustomUserDetailsService customUserDetailsService){
+                          CustomUserDetailsService customUserDetailsService) {
         this.myAuthenticationFailureHandler = myAuthenticationFailureHandler;
         this.customUserDetailsService = customUserDetailsService;
         this.authManager = authManager;
