@@ -19,7 +19,6 @@ public class PostController {
 
     private UserService userService;
 
-    @Autowired
     public PostController(PostService postService, UserService userService){
         this.postService = postService;
         this.userService = userService;
@@ -31,6 +30,7 @@ public class PostController {
         User user = userService.findByEmail(auth.getName());
 
         postService.insertPost(insertPostDto, user);
+
         return "redirect:/users/profile";
     }
 
@@ -39,7 +39,7 @@ public class PostController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
 
-        // 삭제 기능 추가
+        postService.deletePost(postId, user.getId());
 
         return "redirect:/users/profile";
     }

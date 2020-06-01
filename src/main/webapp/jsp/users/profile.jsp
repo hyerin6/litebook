@@ -76,7 +76,7 @@
                         <c:forEach var="post" items="${ posts }" varStatus="vs">
                         <li>
                             <div class="timeline-icon">
-                                <a href="javascript:;">&nbsp</a>
+                                <a>&nbsp</a>
                             </div>
                             <div class="timeline-body block">
                                 <div class="timeline-header">
@@ -175,7 +175,7 @@
 
     var lastIdOfPosts = <c:out value="${lastIdOfPosts}" />;
     var minIdOfPosts = <c:out value="${minIdOfPosts}" />;
-    var menu = 0;
+    var count = 0;
     var isLoading = false;
 
     $(window).scroll(function() {
@@ -183,93 +183,127 @@
         if($(window).scrollTop() > 0 && !isLoading && lastIdOfPosts > minIdOfPosts) { // 스크롤을 내리는 중일 때
             if ($(window).scrollTop() == $(document).height() - window_height) {
                 isLoading = true; // 로딩 시작
-                if(menu == 0) { // posts
-                    $.ajax({
-                        type: 'POST',
-                        url: '/myPosts',
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-HTTP-Method-Override": "POST"
-                        },
-                        dataType: 'json',
-                        data: JSON.stringify({
-                            lastIdOfPosts: lastIdOfPosts
-                        }),
-                        success: function (data) {
-                            console.log(data);
-                            lastIdOfPosts = data.lastIdOfPosts;
+                $.ajax({
+                    type: 'POST',
+                    url: '/myPosts',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-HTTP-Method-Override": "POST"
+                    },
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        lastIdOfPosts: lastIdOfPosts
+                    }),
+                    success: function (data) {
+                        console.log(data);
+                        lastIdOfPosts = data.lastIdOfPosts;
+                        count += 5;
 
-                            if(data.posts != null && data.posts.length != 0) {
-                                for(let i = 0; i < data.posts.length; ++i) {
+                        if(data.posts != null && data.posts.length != 0) {
+                            for(let i = 0; i < data.posts.length; ++i) {
 
-                                    let sd = formatDate(data.posts[i].startedDate);
+                                let sd = formatDate(data.posts[i].startedDate);
 
-                                    $(".posts").append(
-                                        <%-- 수정 & 삭제 기능 완성 후 구현 --%>
-                                        <%--"<li>\n" +--%>
-                                        <%--"<div class=\"timeline-icon\">\n" +--%>
-                                        <%--"<a href=\"javascript:;\">&nbsp</a>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"<div class=\"timeline-body block\">\n" +--%>
-                                        <%--" <div class=\"timeline-header\">\n" +--%>
-                                        <%--"<span class=\"userimage\">\n" +--%>
-                                        <%--"<sec:authentication property="user.profile.filePath" var="path"/>" +--%>
-                                        <%--"<img src=" + "${path}" + " alt=\"\" onerror=\"this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'\">\n" +--%>
-                                        <%--"</span>\n" +--%>
-                                        <%--"<span class=\"username\"><a href=\"javascript:;\">\n" +--%>
-                                        <%--"<sec:authentication property="user.name"/>" +--%>
-                                        <%--"</a> <small></small></span>\n" +--%>
-                                        <%--"<span class=\"date pull-right text-muted\">" + sd + "</span>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"<div class=\"timeline-content\">\n" +--%>
-                                        <%--"<p class=\"post\">\n" +--%>
-                                        <%--data.posts[i].mainText +--%>
-                                        <%--"</p>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"<div class=\"timeline-likes\">\n" +--%>
-                                        <%--"<div class=\"stats-right\"> <span class=\"stats-text\">21 Comments</span> </div>\n" +--%>
-                                        <%--"<div class=\"stats\">\n" +--%>
-                                        <%--"<span class=\"fa-stack fa-fw stats-icon\">\n" +--%>
-                                        <%--"<i class=\"fa fa-circle fa-stack-2x text-danger\"></i>\n" +--%>
-                                        <%--"<i class=\"fa fa-heart fa-stack-1x fa-inverse t-plus-1\"></i>\n" +--%>
-                                        <%--"</span>\n" +--%>
-                                        <%--"<span class=\"stats-total\">4.3k</span>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"<div class=\"timeline-footer\">\n" +--%>
-                                        <%--"<a href=\"javascript:;\" class=\"m-r-15 text-inverse-lighter\" style=\"margin-right: 5px;\"> Like </a> |\n" +--%>
-                                        <%--"<a href=\"javascript:;\" class=\"m-r-15 text-inverse-lighter\" style=\"margin-right: 5px; margin-left: 5px;\"> Comment </a> |\n" +--%>
-                                        <%--"<a href=\"javascript:;\" class=\"m-r-15 text-inverse-lighter\" style=\"margin-left: 5px;\"> Delete </a>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"<div class=\"timeline-comment-box\">\n" +--%>
-                                        <%--"<div class=\"user\"><img class=\"user\" src=\"" + "${path}" + "\" onerror=\"this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'\"></div>\n" +--%>
-                                        <%--"<div class=\"input\">\n" +--%>
-                                        <%--"<form action=\"\">\n" +--%>
-                                        <%--"<div class=\"input-group\">\n" +--%>
-                                        <%--"<input type=\"text\" class=\"form-control rounded-corner\" placeholder=\"Write a comment...\">\n" +--%>
-                                        <%--"<span class=\"input-group-btn p-l-10\">\n" +--%>
-                                        <%--"<button class=\"btn-gradient blue mini\" type=\"button\" style=\"margin-left: 15px;\">Comment</button>\n" +--%>
-                                        <%--"</span>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"</form>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"</li>"--%>
-                                    )
-                                }
+                                $(".posts").append(
+                                    "<li>\n" +
+                                    "<div class=\"timeline-icon\">\n" +
+                                    "<a>&nbsp</a>\n" +
+                                    "</div>\n" +
+                                    "<div class=\"timeline-body block\">\n" +
+                                    "<div class=\"timeline-header\">\n" +
+                                    "<span class=\"userimage\">\n" +
+                                    "<img src=\"" + "${user.profile.filePath}" + "\" alt=\"\" onerror=\"this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'\">\n" +
+                                    "</span>\n" +
+                                    "<span class=\"username\">\n" +
+                                    "${user.name}" +
+                                    "</span>\n" +
+                                    "<span class=\"date pull-right text-muted\">\n" +
+                                    sd +
+                                    "</span>\n" +
+                                    "</div>\n" +
+                                    "<div class=\"timeline-content\">\n" +
+                                    "<p class=\"post\">" + data.posts[i].mainText + "</p>\n" +
+                                    "</div>\n" +
+                                    "<div class=\"timeline-likes\">\n" +
+                                    "<div class=\"stats\">\n" +
+                                    "<a href=\"#\">\n" +
+                                    "<span class=\"fa-stack fa-fw stats-icon\">\n" +
+                                    "<i class=\"fa fa-circle fa-stack-2x text-danger\"></i>\n" +
+                                    "<i class=\"fa fa-heart fa-stack-1x fa-inverse t-plus-1\"></i>\n" +
+                                    "</span>\n" +
+                                    "</a>\n" +
+                                    "<span class=\"stats-total\">4.3k</span>\n" +
+                                    "</div>\n" +
+                                    "</div>\n" +
+                                    "<div class=\"timeline-footer\">\n" +
+                                    "<div style=\"float: right;\">\n" +
+                                    "<a style=\"color: aliceblue\" href=\"/posts/" + data.posts[i].id + "\" class=\"btn-gradient blue mini\">Delete</a>\n" +
+                                    "<button class=\"btn-gradient blue mini\" type=\"button\" id=\"viewDetailButton" + count+i + "\" data-target=\"#layerpop" + count+i + "\" data-toggle=\"modal\">update</button>\n" +
+                                    "<form method=\"PATCH\">\n" +
+                                    "<div class=\"modal fade\" id=\"layerpop" + count+i + "\">\n" +
+                                    "<div class=\"modal-dialog\">\n" +
+                                    "<div class=\"modal-content\" id=\"layerpop" + count+i + "\">\n" +
+                                    "<div class=\"modal-header\">\n" +
+                                    "<div class=\"modal-title\">\n" +
+                                    "<h3 style=\"margin-bottom: 20px;\">update</h3>\n" +
+                                    "<p>\n" +
+                                    "수정을 원한다면 입력 후 '완료'를 누르세요. <br/>\n" +
+                                    "'취소'를 누르면 이전 페이지로 돌아갑니다.\n" +
+                                    "</p>\n" +
+                                    "</div>\n" +
+                                    "<button type=\"button\" class=\"close\" data-dismiss=\"modal\">×</button>\n" +
+                                    "</div>\n" +
+                                    "<div class=\"modal-body\"><br/>\n" +
+                                    "<textarea id=\"mainText" + count+i + "\" path=\"content\" class=\"form-control\" rows=\"4\">" + data.posts[i].mainText + "</textarea><br/>\n" +
+                                    "</div>\n" +
+                                    "<div class=\"modal-footer\" id=\"layerpop" + count+i + "\">\n" +
+                                    "<input id=\"layerpop" + count+i + "\" class=\"btn-gradient blue mini\" type=\"button\" data-dismiss=\"modal\" onClick=\"update_btn(" + data.posts[i].id + ", $('#mainText'.concat(" + count+i + ")).val());\" value=\"완료\" style=\"float: right; margin-top: 15px;\"/>\n" +
+                                    "<button type=\"button\" class=\"btn-gradient blue mini\" data-dismiss=\"modal\" style=\"margin-top: 14px; margin-left: 10px;\">취소</button>\n" +
+                                    "</div>\n" +
+                                    "</div>\n" +
+                                    "</div>\n" +
+                                    "</div>\n" +
+                                    "</form>\n" +
+                                    "</div>\n" +
+                                    "</div>\n" +
+                                    "</div>\n" +
+                                    "</li>"
+                                )
                             }
-                            isLoading = false;
-                        },
-                        error: function(request, status, error){
-                            this.isLoading = false;
-                            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" +  "error:" + error);
                         }
-                    });
-                }
+                        isLoading = false;
+                    },
+                    error: function(request, status, error){
+                        this.isLoading = false;
+                        alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" +  "error:" + error);
+                    }
+                });
             }
         }
     });
+
+    function update_btn(id, mainText) {
+        $.ajax({
+            type: 'PATCH',
+            url: '/api/posts',
+            headers: {
+                "Content-Type": "application/json",
+                "X-HTTP-Method-Override": "POST"
+            },
+            dataType: 'json',
+            data: JSON.stringify({
+                lastIdOfPosts: lastIdOfPosts,
+                id: id,
+                mainText: mainText
+            }),
+            success: function () {
+                location.href = location.href;
+            },
+            error: function () {
+                location.href = location.href;
+            }
+        });
+    };
 
 </script>
 </body>

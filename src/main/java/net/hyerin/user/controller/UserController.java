@@ -123,6 +123,7 @@ public class UserController {
         model.addAttribute("posts", posts);
         model.addAttribute("lastIdOfPosts", lastIdOfPosts);
         model.addAttribute("minIdOfPosts", postService.getMinIdOfPosts(user.getId()));
+        model.addAttribute("user", userService.findByEmail(user.getEmail()));
         return "users/profile";
     }
 

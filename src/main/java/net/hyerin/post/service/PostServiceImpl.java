@@ -3,9 +3,11 @@ package net.hyerin.post.service;
 import net.hyerin.post.domain.Post;
 import net.hyerin.post.request.InsertPostDto;
 import net.hyerin.post.repository.PostRepository;
+import net.hyerin.post.request.ModifyPostRequest;
 import net.hyerin.user.domain.User;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -30,16 +32,6 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> findByUserId(Long userId){
-        return postRepository.findTop5ByUser_IdOrderByStartedDateDesc(userId);
-    }
-
-    @Override
-    public List<Post> findByFriendId(Long userId){
-        return postRepository.findTop5ByUser_IdOrderByStartedDateDesc(userId);
-    }
-
-    @Override
     public List<Post> getPosts(Long postId, Long userId) {
         final List<Post> posts = get(postId, userId);
         return posts;
@@ -55,6 +47,19 @@ public class PostServiceImpl implements PostService {
     public Long getMinIdOfPosts(Long userId){
         Long minId = postRepository.findMinIdByUserId(userId);
         return minId == null ? new Long(0) : minId;
+    }
+
+    @Override
+    @Transactional
+    public void modifyPost(InsertPostDto insertPostDto, Long postId){
+        Post post = postRepository.findById(postId).get();
+        post.setMainText(insertPostDto.getMainText());
+    }
+
+    @Override
+    @Transactional
+    public void deletePost(Long postId, Long userId) {
+        postRepository.deleteByIdAndUserId(postId, userId);
     }
 
 }
