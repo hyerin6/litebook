@@ -22,16 +22,18 @@ import java.io.Serializable;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Images implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String filePath;
 
-    public Images(String filePath){
+    private String fileName;
+
+    public Images(String filePath, String fileName){
         this.id = null;
         this.filePath = filePath;
+        this.fileName = fileName;
     }
 
 }

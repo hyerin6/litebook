@@ -4,6 +4,8 @@ import net.hyerin.images.domain.Images;
 
 public interface ImagesService {
 
-    public Images saveUserProfile(String filePath);
+    public Images saveImage(String filePath, String fileName);
+
+    public void deleteImage(Long id);
 
 }
