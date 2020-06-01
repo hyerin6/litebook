@@ -13,6 +13,7 @@ import net.hyerin.email.service.EmailService;
 import net.hyerin.images.domain.Images;
 import net.hyerin.images.service.ImagesService;
 import net.hyerin.user.domain.User;
+import net.hyerin.user.dto.UserModifyDto;
 import net.hyerin.user.dto.UserSignupDto;
 import net.hyerin.user.repository.UserRepository;
 import net.hyerin.utils.s3.S3ServiceImpl;
@@ -95,6 +96,34 @@ public class UserServiceImpl implements UserService{
     @Override
     public User findByEmail(String email){
         return userRepository.findOneByEmail(email);
+    }
+
+    @Override
+    @Transactional
+    public User modifyProfile(UserModifyDto userModifyDto, Long userId) throws Exception {
+        User user = userRepository.findById(userId).get();
+
+        if(!userModifyDto.getName().isEmpty()) {
+            user.setName(userModifyDto.getName());
+        }
+
+        if(!userModifyDto.getPassword().isEmpty()) {
+            user.setPassword(EncryptionUtils.encryptSHA256(userModifyDto.getPassword()));
+        }
+
+        if(!userModifyDto.getPhone().isEmpty()) {
+            user.setPhone(userModifyDto.getPhone());
+        }
+
+        if(!userModifyDto.getProfile().isEmpty()) {
+            s3Service.deleteFile(user.getProfile());
+            String randomUUID = UUID.randomUUID().toString();
+            String path = s3Service.userProfileUpload(userModifyDto.getProfile(), randomUUID);
+            Images profile = imagesService.saveImage(path, randomUUID);
+            user.setProfile(profile);
+        }
+
+        return user;
     }
 
     // @Override

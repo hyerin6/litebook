@@ -58,31 +58,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/test/**").permitAll()
-                .antMatchers("/css/**").permitAll()
-                .antMatchers("/users/signup").permitAll()
-                .antMatchers("/users/signupSuccess").permitAll()
-                .antMatchers("/users/signupFail").permitAll()
-                .antMatchers("/users/signin").permitAll()
-                .antMatchers("/users/profile").permitAll()
-                .antMatchers("/users/email").permitAll()
-                .antMatchers("/users/email/**").permitAll()
-                .antMatchers("/auth/**").permitAll()
-                .antMatchers("/").permitAll()
-                .antMatchers("/**").authenticated();
+            .antMatchers("/test/**").permitAll()
+            .antMatchers("/css/**").permitAll()
+            .antMatchers("/users/signup").permitAll()
+            .antMatchers("/users/signupSuccess").permitAll()
+            .antMatchers("/users/signupFail").permitAll()
+            .antMatchers("/users/signin").permitAll()
+            .antMatchers("/users/profile").permitAll()
+            .antMatchers("/users/email").permitAll()
+            .antMatchers("/users/email/**").permitAll()
+            .antMatchers("/auth/**").permitAll()
+            .antMatchers("/").permitAll()
+            .antMatchers("/**").authenticated();
 
         http.formLogin()
-                .loginPage("/users/signin")
-                .loginProcessingUrl("/users/signin_processing")
-                .failureHandler(myAuthenticationFailureHandler)
-                .defaultSuccessUrl("/users/profile", true)
-                .usernameParameter("email")
-                .passwordParameter("password");
+            .loginPage("/users/signin")
+            .loginProcessingUrl("/users/signin_processing")
+            .failureHandler(myAuthenticationFailureHandler)
+            .defaultSuccessUrl("/users/profile", true)
+            .usernameParameter("email")
+            .passwordParameter("password");
 
         http.logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/users/logout_processing"))
-                .logoutSuccessUrl("/users/signin")
-                .invalidateHttpSession(true);
+            // .logoutRequestMatcher(new AntPathRequestMatcher("/users/logout_processing"))
+            .logoutUrl("/users/logout")
+            .logoutSuccessUrl("/users/signin")
+            .invalidateHttpSession(true);
     }
 
 }

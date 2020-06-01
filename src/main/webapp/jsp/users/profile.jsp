@@ -5,7 +5,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:url var="R" value="/" />
 <link rel="stylesheet" href="${R}css/profile.css">
-<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -34,10 +33,10 @@
                     <h4 class="m-t-10 m-b-5"><sec:authentication property="user.name" /></h4>
                     <p class="m-b-10"><sec:authentication property="user.email" /></p>
                     <sec:authorize access="authenticated">
-                        <a href="#" class="btn-gradient blue mini">settings</a>
+                        <a href="/users/modify" class="btn-gradient blue mini">settings</a>
                     </sec:authorize>
                     <sec:authorize access="authenticated">
-                        <a href="#" class="btn-gradient blue mini" style="margin-left: 5px;">logout</a>
+                        <a href="/users/logout" class="btn-gradient blue mini" style="margin-left: 5px;">logout</a>
                     </sec:authorize>
                 </div>
             </div>

@@ -1,15 +1,8 @@
 package net.hyerin.user.controller;
 
-import lombok.extern.slf4j.Slf4j;
-import net.hyerin.email.service.EmailService;
-import net.hyerin.follow.service.FollowService;
-import net.hyerin.post.domain.Post;
-import net.hyerin.post.request.InsertPostDto;
-import net.hyerin.post.service.PostService;
-import net.hyerin.user.domain.User;
-import net.hyerin.user.dto.UserSigninDto;
-import net.hyerin.user.dto.UserSignupDto;
-import net.hyerin.user.service.UserService;
+import java.util.List;
+
+import javax.validation.Valid;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +11,26 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
-import java.util.List;
+import net.hyerin.email.service.EmailService;
+import net.hyerin.follow.service.FollowService;
+import net.hyerin.post.domain.Post;
+import net.hyerin.post.request.InsertPostDto;
+import net.hyerin.post.service.PostService;
+import net.hyerin.user.domain.User;
+import net.hyerin.user.dto.UserModifyDto;
+import net.hyerin.user.dto.UserSigninDto;
+import net.hyerin.user.dto.UserSignupDto;
+import net.hyerin.user.service.UserService;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
@@ -34,23 +43,19 @@ public class UserController {
 
     private PostService postService;
 
-    private FollowService followService;
-
-    @Autowired
     public UserController(UserService userService, EmailService emailService,
-                          PostService postService, FollowService followService){
+                          PostService postService) {
         this.userService = userService;
         this.emailService = emailService;
         this.postService = postService;
-        this.followService = followService;
     }
 
-    @RequestMapping(value="signup", method = RequestMethod.GET)
+    @GetMapping(value="signup")
     public String signup(Model model, UserSignupDto userSignupDto){
         return "users/signup";
     }
 
-    @RequestMapping(value="signup", method = RequestMethod.POST)
+    @PostMapping(value="signup")
     public String signup(@Valid @ModelAttribute("userSignupDto") UserSignupDto userSignupDto,
                          BindingResult bindingResult, Model model){
         if (userService.hasErrors(userSignupDto, bindingResult))
@@ -64,17 +69,17 @@ public class UserController {
         return "users/signupSuccess";
     }
 
-    @RequestMapping(value = "signupSuccess", method = RequestMethod.GET)
+    @GetMapping(value = "signupSuccess")
     public String signupSuccess() {
         return "users/signupSuccess";
     }
 
-    @RequestMapping(value = "signupFail", method = RequestMethod.GET)
+    @GetMapping(value = "signupFail")
     public String signupFail() {
         return "users/signupFail";
     }
 
-    @RequestMapping(value = "email/verify", method = RequestMethod.GET)
+    @GetMapping(value = "email/verify")
     public String verifyCode(@RequestParam("email") String email, @RequestParam("code") String code){
         if(emailService.isMatchVerifyCode(email, code)){
             userService.updateUserType(email);
@@ -83,35 +88,35 @@ public class UserController {
         return "/auth/fail";
     }
 
-    @RequestMapping(value = "auth/success", method = RequestMethod.GET)
+    @GetMapping(value = "auth/success")
     public String authSuccess(){
         return "users/auth/success";
     }
 
-    @RequestMapping(value = "auth/fail", method = RequestMethod.GET)
+    @GetMapping(value = "auth/fail")
     public String authFail(){
         return "users/auth/fail";
     }
 
-    @RequestMapping(value = "signin", method = RequestMethod.GET)
+    @GetMapping(value = "signin")
     public String signin(Model model, @ModelAttribute("userSigninDto")UserSigninDto userSigninDto){
         return "users/signin";
     }
 
-    @RequestMapping(value = "signin", method = RequestMethod.POST)
+    @PostMapping(value = "signin")
     public String signin(@Valid @ModelAttribute("userSigninDto") UserSigninDto userSigninDto,
                          BindingResult bindingResult, Model model) {
         return "users/profile";
     }
 
-    @RequestMapping(value = "signin_processing", method = RequestMethod.POST)
+    @PostMapping(value = "signin_processing")
     public String signinPrceocessing(@Valid @ModelAttribute("userSigninDto") UserSigninDto userSigninDto,
                                      BindingResult bindingResult, Model model) {
         return "users/profile";
     }
 
     // 나의 프로필 : user.posts 와 POSTS 메뉴에서 글쓰기 기능을 위해 insertPostDto 가 필요하다.
-    @RequestMapping(value = "profile", method = RequestMethod.GET)
+    @GetMapping(value = "profile")
     public String profile(Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
@@ -130,7 +135,7 @@ public class UserController {
     }
 
     // 다른 사용자 프로필 : id 에 해당하는 user, user.posts 가 필요하다.
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @GetMapping(value = "{id}")
     public String profile(@PathVariable("id") Long id, Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User loginUser = userService.findByEmail(auth.getName());
@@ -152,6 +157,27 @@ public class UserController {
         model.addAttribute("minIdOfPosts", postService.getMinIdOfPosts(id));
 
         return "friends/profile";
+    }
+
+    @GetMapping(value="modify")
+    public String modifyProfile(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User loginUser = userService.findByEmail(auth.getName());
+
+        model.addAttribute("user", userService.findByEmail(loginUser.getEmail()));
+        model.addAttribute("userModifyDto", new UserModifyDto());
+
+        return "users/settings";
+    }
+
+    @PostMapping(value="modify")
+    public String modifyProfile(UserModifyDto userModifyDto, Model model) throws Exception {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User loginUser = userService.findByEmail(auth.getName());
+
+        userService.modifyProfile(userModifyDto, loginUser.getId());
+
+        return "redirect:/users/logout";
     }
 
 }
