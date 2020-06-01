@@ -6,7 +6,6 @@
 <c:url var="R" value="/" />
 <link rel="stylesheet" href="${R}css/profile.css">
 <!DOCTYPE html>
-<html>
 <head>
     <meta charset="utf-8">
     <title>litebook</title>

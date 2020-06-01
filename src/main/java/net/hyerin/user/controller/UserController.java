@@ -10,6 +10,8 @@ import net.hyerin.user.domain.User;
 import net.hyerin.user.dto.UserSigninDto;
 import net.hyerin.user.dto.UserSignupDto;
 import net.hyerin.user.service.UserService;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -133,7 +135,14 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User loginUser = userService.findByEmail(auth.getName());
 
+        model.addAttribute("loginUser", userService.findByEmail(loginUser.getEmail()));
+        model.addAttribute("user", userService.findById(id));
+
         List<Post> posts = postService.getPosts(null, id);
+
+        if(CollectionUtils.isEmpty(posts)) {
+            return "friends/emptyProfile";
+        }
 
         Long lastIdOfPosts = posts.isEmpty() ?
             new Long(0) : posts.get(posts.size() - 1).getId();
@@ -141,8 +150,6 @@ public class UserController {
         model.addAttribute("posts", posts);
         model.addAttribute("lastIdOfPosts", lastIdOfPosts);
         model.addAttribute("minIdOfPosts", postService.getMinIdOfPosts(id));
-        model.addAttribute("loginUser", userService.findByEmail(loginUser.getEmail()));
-        model.addAttribute("user", userService.findById(id));
 
         return "friends/profile";
     }
