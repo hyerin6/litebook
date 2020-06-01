@@ -28,4 +28,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             value = "SELECT MIN(id) FROM Post WHERE user_id = :userId")
     public Long findMinIdByUserId(Long userId);
 
+    public Post findOneById(Long id);
+
+    public Long deleteByIdAndUserId(Long id, Long userId);
 }

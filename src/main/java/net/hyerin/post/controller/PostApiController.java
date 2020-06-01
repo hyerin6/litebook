@@ -4,17 +4,17 @@ import java.util.List;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.hyerin.post.domain.Post;
 import net.hyerin.post.request.GetPostsRequest;
+import net.hyerin.post.request.InsertPostDto;
+import net.hyerin.post.request.ModifyPostRequest;
 import net.hyerin.post.response.PostsResponse;
 import net.hyerin.post.service.PostService;
 import net.hyerin.user.domain.User;
@@ -62,6 +62,12 @@ public class PostApiController {
                 .build();
     }
 
+    @PatchMapping("/api/posts")
+    public void modifyPost(@RequestBody ModifyPostRequest modifyPostRequest) {
+        InsertPostDto insertPostDto = new InsertPostDto();
+        insertPostDto.setMainText(modifyPostRequest.getMainText());
 
+        postService.modifyPost(insertPostDto, modifyPostRequest.getId());
+    }
 
 }
