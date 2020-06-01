@@ -1,24 +1,35 @@
 package net.hyerin.images.service;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import net.hyerin.images.domain.Images;
 import net.hyerin.images.repository.ImagesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import net.hyerin.utils.s3.S3Service;
 
-@Service("imagesService")
-public class ImagesServiceImpl implements ImagesService{
+@Service
+@Transactional
+public class ImagesServiceImpl implements ImagesService {
 
     private ImagesRepository imagesRepository;
 
-    @Autowired
-    public ImagesServiceImpl(ImagesRepository imagesRepository){
+    private S3Service s3Service;
+
+    public ImagesServiceImpl(ImagesRepository imagesRepository, S3Service s3Service){
         this.imagesRepository = imagesRepository;
+        this.s3Service = s3Service;
     }
 
     @Override
-    public Images saveUserProfile(String filePath){
-        Images profile = new Images(filePath);
-        return imagesRepository.save(profile);
+    public Images saveImage(String filePath, String fileName) {
+        Images images = new Images(filePath, fileName);
+        return imagesRepository.save(images);
+    }
+
+    @Override
+    public void deleteImage(Long id) {
+        s3Service.deleteFile(imagesRepository.findOneById(id));
+        imagesRepository.deleteById(id);
     }
 
 }

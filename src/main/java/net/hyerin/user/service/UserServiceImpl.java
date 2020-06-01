@@ -1,23 +1,24 @@
 package net.hyerin.user.service;
 
-import lombok.extern.slf4j.Slf4j;
-import net.hyerin.email.service.EmailService;
-import net.hyerin.images.domain.Images;
-import net.hyerin.images.service.ImagesService;
-import net.hyerin.post.domain.Post;
-import net.hyerin.user.domain.User;
-import net.hyerin.user.dto.UserSignupDto;
-import net.hyerin.user.repository.UserRepository;
-import net.hyerin.utils.s3.S3ServiceImpl;
-import net.hyerin.utils.security.EncryptionUtils;
+import static net.hyerin.user.domain.Role.*;
+
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
-import java.util.List;
+import net.hyerin.email.service.EmailService;
+import net.hyerin.images.domain.Images;
+import net.hyerin.images.service.ImagesService;
+import net.hyerin.user.domain.User;
+import net.hyerin.user.dto.UserSignupDto;
+import net.hyerin.user.repository.UserRepository;
+import net.hyerin.utils.s3.S3ServiceImpl;
+import net.hyerin.utils.security.EncryptionUtils;
 
-import static net.hyerin.user.domain.Role.IS_AUTHENTICATED_FULLY;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service("userService")
@@ -46,9 +47,10 @@ public class UserServiceImpl implements UserService{
         emailService.sendMail(user.getEmail());
 
         if(!userSignupDto.getProfile().isEmpty()) {
-            String path = s3Service.userProfileUpload(userSignupDto.getProfile()); // aws s3 이미지 저장
-            Images profile = imagesService.saveUserProfile(path); // Images 테이블에 저장
-            user.setProfile(profile); // user에 profile
+            String randomUUID = UUID.randomUUID().toString();
+            String path = s3Service.userProfileUpload(userSignupDto.getProfile(), randomUUID);
+            Images profile = imagesService.saveImage(path, randomUUID);
+            user.setProfile(profile);
         }
 
         userRepository.save(user);

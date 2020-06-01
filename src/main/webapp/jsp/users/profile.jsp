@@ -64,7 +64,7 @@
                                 <div class="form-group">
                                     <div class="panel-body timeline-comment-box" style="padding-top: 30px;">
                                         <form:form method="post" modelAttribute="insertPostDto" action="/posts">
-                                            <form:textarea path="mainText" class="form-control" rows="6" placeholder="What are you thinking?" />
+                                            <form:textarea path="mainText" class="form-control" rows="4" placeholder="What are you thinking?" />
                                             <div class="mar-top clearfix">
                                                 <form:button class="btn-gradient blue mini" type="submit" style="float: right; margin-top: 15px;">Share</form:button>
                                             </div>

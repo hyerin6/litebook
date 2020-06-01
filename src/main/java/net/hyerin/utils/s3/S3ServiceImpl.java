@@ -1,24 +1,24 @@
 package net.hyerin.utils.s3;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.IOException;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.IOException;
+import net.hyerin.images.domain.Images;
+
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import lombok.NoArgsConstructor;
 
 @Service("s3Service")
 @NoArgsConstructor
@@ -60,14 +60,20 @@ public class S3ServiceImpl implements S3Service{
     }
 
     @Override
-    public String userProfileUpload(MultipartFile file) throws IOException {
-        String fileName = file.getOriginalFilename();
-        String path = bucket + "/post";
+    public String userProfileUpload(MultipartFile file, String fileName) throws IOException {
+        String path = bucket.concat("/profile");
 
         s3Client.putObject(new PutObjectRequest(path, fileName, file.getInputStream(), null)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
+            .withCannedAcl(CannedAccessControlList.PublicRead));
 
         return s3Client.getUrl(path, fileName).toString();
+    }
+
+    @Override
+    public void deleteFile(Images images) {
+        s3Client.deleteObject(new DeleteObjectRequest(
+            bucket + "/profile",
+            images.getFileName()));
     }
 
 }

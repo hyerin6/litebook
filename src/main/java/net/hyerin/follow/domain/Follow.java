@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -22,7 +24,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Follow {
+public class Follow implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
