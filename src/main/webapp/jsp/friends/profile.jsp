@@ -50,7 +50,7 @@
                         <c:forEach var="post" items="${ posts }">
                             <li>
                                 <div class="timeline-icon">
-                                    <a href="javascript:;">&nbsp</a>
+                                    <a>&nbsp</a>
                                 </div>
                                 <div class="timeline-body">
                                     <div class="timeline-header">
@@ -145,60 +145,39 @@
                                 for(let i = 0; i < data.posts.length; ++i) {
                                     let sd = formatDate(data.posts[i].startedDate);
                                     $(".posts").append(
-                                        <%-- 기능 추가 후 구현 --%>
-                                        <%--"<li>\n" +--%>
-                                        <%--"<div class=\"timeline-icon\">\n" +--%>
-                                        <%--"<a href=\"javascript:;\">&nbsp</a>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"<div class=\"timeline-body\">\n" +--%>
-                                        <%--"<div class=\"timeline-header\">\n" +--%>
-                                        <%--"<span class=\"userimage\">\n" +--%>
-                                        <%--"<img src=\"" + "${user.profile.filePath}" + "\" alt=\"\" onerror=\"this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'\"></span>\n" +--%>
-                                        <%--"<span class=\"username\">\n" +--%>
-                                        <%--"<a href=\"javascript:;\">" + "${user.name}" + "</a> <small></small>\n" +--%>
-                                        <%--"</span>\n" +--%>
-                                        <%--"<span class=\"date pull-right text-muted\">" + sd + "</span>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"<div class=\"timeline-content\">\n" +--%>
-                                        <%--"<p class=\"post\">\n" +--%>
-                                        <%--data.posts[i].mainText--%>
-                                        <%--+ "\n" +--%>
-                                        <%--"</p>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"<div class=\"timeline-likes\">\n" +--%>
-                                        <%--"<div class=\"stats-right\">\n" +--%>
-                                        <%--"<span class=\"stats-text\">21 Comments</span>\n" +--%>
-                                        <%--" </div>\n" +--%>
-                                        <%--"<div class=\"stats\">\n" +--%>
-                                        <%--"<span class=\"fa-stack fa-fw stats-icon\">\n" +--%>
-                                        <%--"<i class=\"fa fa-circle fa-stack-2x text-danger\"></i>\n" +--%>
-                                        <%--"<i class=\"fa fa-heart fa-stack-1x fa-inverse t-plus-1\"></i>\n" +--%>
-                                        <%--"</span>\n" +--%>
-                                        <%--"<span class=\"stats-total\">4.3k</span>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"<div class=\"timeline-footer\">\n" +--%>
-                                        <%--"<a href=\"javascript:;\" class=\"m-r-15 text-inverse-lighter\" style=\"margin-right: 5px;\"> Like </a> |\n" +--%>
-                                        <%--"<a href=\"javascript:;\" class=\"m-r-15 text-inverse-lighter\" style=\"margin-right: 5px; margin-left: 5px;\"> Comment </a> |\n" +--%>
-                                        <%--"<a href=\"javascript:;\" class=\"m-r-15 text-inverse-lighter\" style=\"margin-left: 5px;\"> Delete </a>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"<div class=\"timeline-comment-box\">\n" +--%>
-                                        <%--"<div class=\"user\">\n" +--%>
-                                        <%--"<img class=\"user\" src=\"" + "${loginUser.profile.filePath}" + "\" alt=\"\" onerror=\"this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'\">" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"<div class=\"input\">\n" +--%>
-                                        <%--"<form action=\"\">\n" +--%>
-                                        <%--"<div class=\"input-group\">\n" +--%>
-                                        <%--"<input type=\"text\" class=\"form-control rounded-corner\" placeholder=\"Write a comment...\">\n" +--%>
-                                        <%--"<span class=\"input-group-btn p-l-10\">\n" +--%>
-                                        <%--"<button class=\"btn-gradient blue mini\" type=\"button\" style=\"margin-left: 15px;\">Comment</button>\n" +--%>
-                                        <%--"</span>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"</form>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"</div>\n" +--%>
-                                        <%--"</li>"--%>
+                                        "<li>\n" +
+                                        "<div class=\"timeline-icon\">\n" +
+                                        "<a>&nbsp</a>\n" +
+                                        "</div>" +
+                                        "<div class=\"timeline-body\">\n" +
+                                        "<div class=\"timeline-header\">\n" +
+                                        "<span class=\"userimage\">\n" +
+                                        "<img src=\"" + "${user.profile.filePath}" + "\" alt=\"\" onerror=\"this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'\"></span>\n" +
+                                        "<span class=\"username\">\n" +
+                                        "${user.name}" + "\n" +
+                                        "</span>\n" +
+                                        "<span class=\"date pull-right text-muted\">\n" +
+                                        sd +
+                                        "</span>\n" +
+                                        "</div>\n" +
+                                        "<div class=\"timeline-content\">\n" +
+                                        "<p class=\"post\">" + data.posts[i].mainText + "</p>\n" +
+                                        "</div>\n" +
+                                        "<div class=\"timeline-likes\">\n" +
+                                        "<div class=\"stats\">\n" +
+                                        "<a href=\"#\">\n" +
+                                        "<span class=\"fa-stack fa-fw stats-icon\">\n" +
+                                        "<i class=\"fa fa-circle fa-stack-2x text-danger\"></i>\n" +
+                                        "<i class=\"fa fa-heart fa-stack-1x fa-inverse t-plus-1\"></i>\n" +
+                                        "</span>\n" +
+                                        "</a>\n" +
+                                        "<span class=\"stats-total\">4.3k</span>\n" +
+                                        "</div>\n" +
+                                        "</div>\n" +
+                                        "<div class=\"timeline-footer\">\n" +
+                                        "</div>\n" +
+                                        "</div>\n" +
+                                        "</li>"
                                     )
                                 }
                             }
