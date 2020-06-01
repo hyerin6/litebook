@@ -1,6 +1,7 @@
 package net.hyerin.user.service;
 
 import net.hyerin.user.domain.User;
+import net.hyerin.user.dto.UserModifyDto;
 import net.hyerin.user.dto.UserSigninDto;
 import net.hyerin.user.dto.UserSignupDto;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,4 +15,5 @@ public interface UserService {
     public boolean hasErrors(UserSignupDto userSignupDto, BindingResult bindingResult);
     public User findById(Long id);
     public User findByEmail(String email);
+    public User modifyProfile(UserModifyDto userModifyDto, Long userId) throws Exception;
 }

@@ -30,15 +30,12 @@
                 <form:password path="password" class="form-control" placeholder="Password" />
                 <form:errors path="password" class="error" />
             </div><br/><br/>
-            <div class="loginbox-forgot">
-                <a href="">Forgot Password?</a>
-            </div>
             <div class="loginbox-submit">
                 <button type="submit" class="btn btn-primary btn-block">
                     <i class="glyphicon glyphicon-user"></i> Login </button>
             </div>
             <div class="loginbox-signup">
-                <a href="#register.html">Sign Up With Email</a>
+                <a href="/users/signup">Sign Up With Email</a>
             </div>
 
             <c:if test="${ param.error != null }"> <div class="loginbox-title2" style="color: red">
