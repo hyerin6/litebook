@@ -180,4 +180,14 @@ public class UserController {
         return "redirect:/users/logout";
     }
 
+    @GetMapping(value="delete")
+    public String deleteUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(auth.getName());
+
+        userService.deleteUser(user);
+
+        return "redirect:/users/signup";
+    }
+
 }
