@@ -126,6 +126,12 @@ public class UserServiceImpl implements UserService{
         return user;
     }
 
+    @Override
+    @Transactional
+    public void deleteUser(User user) {
+        userRepository.deleteById(user.getId());
+    }
+
     // @Override
     // public List<User> getUsers(String name) {
     //     final List<User> users = get(postId, userId);

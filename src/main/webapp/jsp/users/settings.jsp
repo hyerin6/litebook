@@ -37,16 +37,22 @@
                     <form:label path="profile">Profile</form:label>
                     <form:input type="file" class="form-control" placeholder="Profile" path="profile"/>
                 </div>
-
-                <div class="signupbox-textbox" style="margin-top: 20px;">
-                    <button type="submit" class="btn btn-primary btn-block">
-                        <i class="glyphicon glyphicon-user"></i> UPDATE
+                <div class="button-setting">
+                <div class="btn-gradient blue mini">
+                    <div>
+                        <a href="/users/profile" class="glyphicon glyphicon-user" style="color: #eeeeee">취소</a>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="btn-gradient blue mini">
+                        <a style="cursor:pointer">수정</a>
                     </button>
                 </div>
-                <div class="signupbox-textbox">
-                    <div class="btn btn-primary btn-block">
-                        <a href="/users/profile" class="glyphicon glyphicon-user" style="color: #eeeeee">CANCEL</a>
+                <div class="btn-gradient blue mini">
+                    <div>
+                        <a href="/users/delete" class="glyphicon glyphicon-user" style="color: #eeeeee">탈퇴하기</a>
                     </div>
+                </div>
                 </div>
             </form:form>
         </div>
