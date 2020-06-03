@@ -5,7 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.http.HttpException;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -16,11 +17,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import net.hyerin.email.service.EmailService;
-import net.hyerin.follow.service.FollowService;
 import net.hyerin.post.domain.Post;
 import net.hyerin.post.request.InsertPostDto;
 import net.hyerin.post.service.PostService;
@@ -124,37 +123,43 @@ public class UserController {
         List<Post> posts = postService.getPosts(null, user.getId());
 
         Long lastIdOfPosts = posts.isEmpty() ?
-                null : posts.get(posts.size() - 1).getId();
+            null : posts.get(posts.size() - 1).getId();
 
         model.addAttribute("insertPostDto", new InsertPostDto());
         model.addAttribute("posts", posts);
         model.addAttribute("lastIdOfPosts", lastIdOfPosts);
-        model.addAttribute("minIdOfPosts", postService.getMinIdOfPosts(user.getId()));
+        model.addAttribute("minIdOfPosts", postService.getMinIdOfPosts(user.getId()).getMinIdOfPosts());
         model.addAttribute("user", userService.findByEmail(user.getEmail()));
         return "users/profile";
     }
 
     // 다른 사용자 프로필 : id 에 해당하는 user, user.posts 가 필요하다.
     @GetMapping(value = "{id}")
-    public String profile(@PathVariable("id") Long id, Model model){
+    public String profile(@PathVariable("id") Long id, Model model) throws HttpException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User loginUser = userService.findByEmail(auth.getName());
 
-        model.addAttribute("loginUser", userService.findByEmail(loginUser.getEmail()));
-        model.addAttribute("user", userService.findById(id));
-
-        List<Post> posts = postService.getPosts(null, id);
-
-        if(CollectionUtils.isEmpty(posts)) {
-            return "friends/emptyProfile";
+        User user = userService.findById(id);
+        if(user == null) {
+            throw new HttpException("Not Found User id : " + id);
         }
 
+        model.addAttribute("loginUser", userService.findByEmail(loginUser.getEmail()));
+        model.addAttribute("user", user);
+
+        List<Post> posts = postService.getPosts(null, user.getId());
+
+		if (posts.isEmpty()) {
+		    model.addAttribute("user", user);
+		    return "friends/emptyProfile";
+		}
+
         Long lastIdOfPosts = posts.isEmpty() ?
-            new Long(0) : posts.get(posts.size() - 1).getId();
+            null : posts.get(posts.size() - 1).getId();
 
         model.addAttribute("posts", posts);
         model.addAttribute("lastIdOfPosts", lastIdOfPosts);
-        model.addAttribute("minIdOfPosts", postService.getMinIdOfPosts(id));
+        model.addAttribute("minIdOfPosts", postService.getMinIdOfPosts(id).getMinIdOfPosts());
 
         return "friends/profile";
     }

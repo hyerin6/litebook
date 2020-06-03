@@ -31,6 +31,7 @@
                                 <h4 class="m-t-10 m-b-5">${user.name}</h4>
                                 <p class="m-b-10">${user.email}</p>
                                 <a href="/users/profile" class="btn-gradient blue mini"> My Page </a>
+                                <a href="/follows/${user.id}" class="btn-gradient blue mini" style="margin-left: 5px;"> Follow </a>
                             </div>
                         </div>
                         <div class="main_nav tab_wrap">

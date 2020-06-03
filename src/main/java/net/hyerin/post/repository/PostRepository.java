@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
+    public Post findOneById(Long id);
+
 //    //최초로 조회할 때
 //    @Query(nativeQuery = true,
 //            value = "SELECT * FROM Post WHERE user_id = :userId " +
@@ -28,7 +30,27 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             value = "SELECT MIN(id) FROM Post WHERE user_id = :userId")
     public Long findMinIdByUserId(Long userId);
 
-    public Post findOneById(Long id);
+    @Query(nativeQuery = true,
+        value = "SELECT p.id, mainText, started_date, user_id FROM Post p WHERE user_id "
+            + "IN (SELECT f.following_id FROM Follow f WHERE f.follower_id = :userId) "
+            + "OR p.user_id = :userId "
+            + "ORDER BY p.id DESC LIMIT 5")
+    public List<Post> findByFriendUserId(Long userId);
+
+    @Query(nativeQuery = true,
+        value = "SELECT MIN(p.id) FROM Post p "
+            + "WHERE p.user_id IN (SELECT f.following_id FROM Follow f WHERE f.follower_id = :userId) "
+            + "OR p.user_id = :userId")
+    public Long findMinIdByFriendUserId(Long userId);
+
+    @Query(nativeQuery = true,
+        value = "SELECT p.id, mainText, started_date, user_id FROM Post p "
+            + "WHERE (p.user_id IN (SELECT f.following_id FROM Follow f WHERE f.follower_id = :userId) "
+            + "OR p.user_id = :userId) "
+            + "AND p.id < :postId "
+            + "ORDER BY p.id DESC LIMIT 5")
+    public List<Post> findByIdAndFriendUserId(Long postId, Long userId);
 
     public Long deleteByIdAndUserId(Long id, Long userId);
+
 }

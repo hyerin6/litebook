@@ -4,7 +4,9 @@ import static net.hyerin.user.domain.Role.*;
 
 import java.util.UUID;
 
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -19,6 +21,7 @@ import net.hyerin.user.repository.UserRepository;
 import net.hyerin.utils.s3.S3ServiceImpl;
 import net.hyerin.utils.security.EncryptionUtils;
 
+import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -89,8 +92,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User findById(Long id){
-        return userRepository.findById(id).get();
+    public User findById(Long id) {
+        return userRepository.findOneById(id);
     }
 
     @Override

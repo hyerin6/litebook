@@ -2,6 +2,7 @@ package net.hyerin.post.controller;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -42,7 +43,7 @@ public class PostApiController {
 
         List<Post> posts = postService.getPosts(getPostsRequest.getLastIdOfPosts(), user.getId());
         Long lastIdOfPosts = posts.isEmpty() ?
-                null : posts.get(posts.size() - 1).getId();
+            null : posts.get(posts.size() - 1).getId();
 
         return PostsResponse.builder()
                 .posts(posts)
@@ -52,9 +53,9 @@ public class PostApiController {
 
     @PostMapping(value="/{id}/posts")
     public  @ResponseBody PostsResponse getFriendPosts(@RequestBody GetPostsRequest getPostsRequest, @PathVariable("id") Long userId) {
-        List<Post> posts = postService.getPosts(getPostsRequest.getLastIdOfPosts(), userId);
+        List<Post> posts = postService.getFriendPosts(getPostsRequest.getLastIdOfPosts(), userId);
         Long lastIdOfPosts = posts.isEmpty() ?
-                null : posts.get(posts.size() - 1).getId();
+            null : posts.get(posts.size() - 1).getId();
 
         return PostsResponse.builder()
                 .posts(posts)
@@ -68,6 +69,22 @@ public class PostApiController {
         insertPostDto.setMainText(modifyPostRequest.getMainText());
 
         postService.modifyPost(insertPostDto, modifyPostRequest.getId());
+    }
+
+    @PostMapping("/api/timeline/feeds")
+    public @ResponseBody PostsResponse getMyTimeline(@RequestBody GetPostsRequest getPostsRequest) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(auth.getName());
+        Long userId = user.getId();
+
+        List<Post> posts = postService.getFeeds(getPostsRequest.getLastIdOfPosts(), userId);
+        Long lastIdOfPosts = CollectionUtils.isEmpty(posts) ?
+            null : posts.get(posts.size() - 1).getId();
+
+        return PostsResponse.builder()
+            .posts(posts)
+            .lastIdOfPosts(lastIdOfPosts)
+            .build();
     }
 
 }
