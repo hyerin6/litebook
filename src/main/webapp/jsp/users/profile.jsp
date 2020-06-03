@@ -26,8 +26,8 @@
             <div class="profile-header-content">
                 <!-- 프로필 사진 -->
                 <div class="profile-header-img">
-                    <sec:authentication property="user.profile.filePath" var="path"/>
-                    <img src="${path}" alt="" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
+                    <img src="${user.profile == null ?
+                    'https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg' : user.profile.filePath}">
                 </div>
                 <div class="profile-header-info"> <!-- 이름, 이메일 -->
                     <h4 class="m-t-10 m-b-5"><sec:authentication property="user.name" /></h4>
@@ -45,7 +45,7 @@
             <div class="main_nav tab_wrap">
                 <ul class="profile-header-tab nav nav-tabs center tab_menu_container">
                     <li class="nav-item tab_menu_btn on"><a href="/users/profile" target="_self" class="tab_menu_btn1 tab_menu_btn1 on active show">POSTS</a></li>
-                    <li class="nav-item tab_menu_btn"><a href="#" target="_self" class="tab_menu_btn2">TIME LINE</a></li>
+                    <li class="nav-item tab_menu_btn"><a href="/timeline/feeds" target="_self" class="tab_menu_btn2">TIME LINE</a></li>
                     <li class="nav-item tab_menu_btn"><a href="/followers" target="_self" class="tab_menu_btn3">FOLLOWER</a></li>
                     <li class="nav-item tab_menu_btn"><a href="/followings" target="_self" class="tab_menu_btn4">FOLLOWING</a></li>
                     <li class="nav-item tab_menu_btn"><a href="#profile-search" target="_self" class="tab_menu_btn5">SEARCH</a></li>
@@ -80,11 +80,11 @@
                             <div class="timeline-body block">
                                 <div class="timeline-header">
                                     <span class="userimage">
-                                        <sec:authentication property="user.profile.filePath" var="path"/>
-                                        <img src="${path}" alt="" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
+                                        <img src="${user.profile == null ?
+                                        'https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg' : user.profile.filePath}">
                                     </span>
                                     <span class="username">
-                                        <sec:authentication property="user.name" />
+                                        ${user.name}
                                     </span>
                                     <span class="date pull-right text-muted">
                                             <fmt:formatDate value="${post.startedDate}" pattern="yyyy-MM-dd HH:mm"/>
@@ -151,9 +151,8 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-
     function formatDate(date) {
-        var d = new Date(date),
+        let d = new Date(date),
             month = '' + (d.getMonth() + 1),
             day = '' + d.getDate(),
             year = d.getFullYear(),
@@ -172,14 +171,16 @@
         return [year, month, day].join('-') + " " + [hour, minutes].join(':');
     }
 
-    var lastIdOfPosts = <c:out value="${lastIdOfPosts}" />;
-    var minIdOfPosts = <c:out value="${minIdOfPosts}" />;
-    var count = 0;
-    var isLoading = false;
+    let lastIdOfPosts = <c:out value="${lastIdOfPosts}" />;
+    let minIdOfPosts = <c:out value="${minIdOfPosts}" />;
+    let count = 0;
+    let isLoading = false;
+    let profileImage = "<c:out value="${user.profile == null ?
+                    'https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg' : user.profile.filePath}" />";
 
-    $(window).scroll(function() {
-        var window_height = window.innerHeight; // 실제 화면 높이
-        if($(window).scrollTop() > 0 && !isLoading && lastIdOfPosts > minIdOfPosts) { // 스크롤을 내리는 중일 때
+        $(window).scroll(function() {
+        var window_height = window.innerHeight;
+        if($(window).scrollTop() > 0 && !isLoading && lastIdOfPosts > minIdOfPosts) {
             if ($(window).scrollTop() == $(document).height() - window_height) {
                 isLoading = true; // 로딩 시작
                 $.ajax({
@@ -200,7 +201,6 @@
 
                         if(data.posts != null && data.posts.length != 0) {
                             for(let i = 0; i < data.posts.length; ++i) {
-
                                 let sd = formatDate(data.posts[i].startedDate);
 
                                 $(".posts").append(
@@ -211,10 +211,10 @@
                                     "<div class=\"timeline-body block\">\n" +
                                     "<div class=\"timeline-header\">\n" +
                                     "<span class=\"userimage\">\n" +
-                                    "<img src=\"" + "${user.profile.filePath}" + "\" alt=\"\" onerror=\"this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'\">\n" +
+                                    "<img src=\"" + profileImage + "\">\n" +
                                     "</span>\n" +
                                     "<span class=\"username\">\n" +
-                                    "${user.name}" +
+                                    data.posts[i].user.name +
                                     "</span>\n" +
                                     "<span class=\"date pull-right text-muted\">\n" +
                                     sd +

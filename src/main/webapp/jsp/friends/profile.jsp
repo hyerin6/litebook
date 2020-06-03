@@ -31,6 +31,7 @@
                 <h4 class="m-t-10 m-b-5">${user.name}</h4>
                 <p class="m-b-10">${user.email}</p>
                 <a href="/users/profile" class="btn-gradient blue mini"> My Page </a>
+                <a href="/follows/${user.id}" class="btn-gradient blue mini" style="margin-left: 5px;"> Follow </a>
             </div>
         </div>
         <div class="main_nav tab_wrap">
@@ -115,16 +116,16 @@
 
     var lastIdOfPosts = <c:out value="${lastIdOfPosts}"/>;
     var minIdOfPosts = <c:out value="${minIdOfPosts}"/>;
-    var menu = 0;
     var isLoading = false;
     var userId = <c:out value="${loginUser.id}"/>;
+    let defaultProfile = 'https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg';
 
     $(window).scroll(function() {
-        var window_height = window.innerHeight; // 실제 화면 높이
-        if($(window).scrollTop() > 0 && !isLoading && lastIdOfPosts > minIdOfPosts) { // 스크롤을 내리는 중일 때
+        var window_height = window.innerHeight;
+        if($(window).scrollTop() > 0 && !isLoading && lastIdOfPosts > minIdOfPosts) {
             if ($(window).scrollTop() == $(document).height() - window_height) {
-                isLoading = true; // 로딩 시작
-                if(menu == 0) { // posts
+                isLoading = true;
+
                     $.ajax({
                         type: 'POST',
                         url: '/' + userId + '/posts',
@@ -143,6 +144,10 @@
                             if(data.posts != null && data.posts.length != 0) {
                                 for(let i = 0; i < data.posts.length; ++i) {
                                     let sd = formatDate(data.posts[i].startedDate);
+
+                                    let profileImage = data.posts[i].user.profile == null ?
+                                        defaultProfile : data.posts[i].user.profile.filePath;
+
                                     $(".posts").append(
                                         "<li>\n" +
                                         "<div class=\"timeline-icon\">\n" +
@@ -151,9 +156,10 @@
                                         "<div class=\"timeline-body\">\n" +
                                         "<div class=\"timeline-header\">\n" +
                                         "<span class=\"userimage\">\n" +
-                                        "<img src=\"" + "${user.profile.filePath}" + "\" alt=\"\" onerror=\"this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'\"></span>\n" +
+                                        "<img src=\"" + profileImage + "\">\n" +
+                                        "</span>\n" +
                                         "<span class=\"username\">\n" +
-                                        "${user.name}" + "\n" +
+                                        data.posts[i].user.name + "\n" +
                                         "</span>\n" +
                                         "<span class=\"date pull-right text-muted\">\n" +
                                         sd +
@@ -189,7 +195,6 @@
                     });
                 }
             }
-        }
     });
 
 </script>

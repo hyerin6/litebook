@@ -4,6 +4,7 @@ import net.hyerin.post.domain.Post;
 import net.hyerin.post.request.InsertPostDto;
 import net.hyerin.post.repository.PostRepository;
 import net.hyerin.post.request.ModifyPostRequest;
+import net.hyerin.post.response.FeedsResponse;
 import net.hyerin.user.domain.User;
 
 import org.springframework.stereotype.Service;
@@ -33,20 +34,39 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getPosts(Long postId, Long userId) {
-        final List<Post> posts = get(postId, userId);
-        return posts;
-    }
-
-    private List<Post> get(Long id, Long userId) {
-        return id == null ?
-                this.postRepository.findTop5ByUser_IdOrderByStartedDateDesc(userId) :
-                this.postRepository.findTop5ByUser_IdAndIdLessThanOrderByIdDescStartedDateDesc(userId, id);
+        return postId == null ?
+            this.postRepository.findTop5ByUser_IdOrderByStartedDateDesc(userId) :
+            this.postRepository.findTop5ByUser_IdAndIdLessThanOrderByIdDescStartedDateDesc(userId, postId);
     }
 
     @Override
-    public Long getMinIdOfPosts(Long userId){
+    public List<Post> getFriendPosts(Long postId, Long userId) {
+        return postId == null ?
+            this.postRepository.findByFriendUserId(userId) :
+            this.postRepository.findByIdAndFriendUserId(postId, userId);
+    }
+
+    @Override
+    public FeedsResponse getMinIdOfPosts(Long userId){
         Long minId = postRepository.findMinIdByUserId(userId);
-        return minId == null ? new Long(0) : minId;
+        return FeedsResponse.builder()
+            .minIdOfPosts(minId == null ? new Long(0) : minId)
+            .build();
+    }
+
+    @Override
+    public FeedsResponse getMinIdOfFriendPosts(Long userId) {
+        Long minId = postRepository.findMinIdByFriendUserId(userId);
+        return FeedsResponse.builder()
+            .minIdOfPosts(minId == null ? new Long(0) : minId)
+            .build();
+    }
+
+    @Override
+    public List<Post> getFeeds(Long postId, Long userId) {
+        return postId == null ?
+            this.postRepository.findByFriendUserId(userId) :
+            this.postRepository.findByIdAndFriendUserId(postId, userId);
     }
 
     @Override

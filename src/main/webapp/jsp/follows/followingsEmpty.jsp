@@ -27,8 +27,7 @@
                         <div class="profile-header-content">
                             <!-- 프로필 사진 -->
                             <div class="profile-header-img">
-                                <sec:authentication property="user.profile.filePath" var="path"/>
-                                <img src="${path}" alt="" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
+                                <img src="${user.profile.filePath}" alt="" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
                             </div>
                             <div class="profile-header-info"> <!-- 이름, 이메일 -->
                                 <h4 class="m-t-10 m-b-5"><sec:authentication property="user.name" /></h4>
@@ -46,7 +45,7 @@
                         <div class="main_nav tab_wrap">
                             <ul class="profile-header-tab nav nav-tabs center tab_menu_container">
                                 <li class="nav-item tab_menu_btn"><a href="/users/profile" target="_self" class="tab_menu_btn1 tab_menu_btn1">POSTS</a></li>
-                                <li class="nav-item tab_menu_btn"><a href="#" target="_self" class="tab_menu_btn2">TIME LINE</a></li>
+                                <li class="nav-item tab_menu_btn"><a href="/timeline/feeds" target="_self" class="tab_menu_btn2">TIME LINE</a></li>
                                 <li class="nav-item tab_menu_btn"><a href="/followers" target="_self" class="tab_menu_btn3">FOLLOWER</a></li>
                                 <li class="nav-item tab_menu_btn on"><a href="/followings" target="_self" class="tab_menu_btn4 on active show">FOLLOWING</a></li>
                                 <li class="nav-item tab_menu_btn"><a href="#profile-search" target="_self" class="tab_menu_btn5">SEARCH</a></li>
