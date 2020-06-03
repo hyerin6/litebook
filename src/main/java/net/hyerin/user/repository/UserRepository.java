@@ -23,12 +23,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
    public int deleteByEmail(String email);
 
-   public List<User> findTop5ByNameOrderByIdDesc(String name);
-
-   public List<User> findTop5ByNameAndIdLessThanOrderByIdDesc(String name, Long id);
-
-   @Query(nativeQuery = true,
-       value = "SELECT MIN(id) FROM User WHERE id = :id")
-   public Long findMinIdById(Long id);
+   public List<User> findByName(String name);
 
 }

@@ -6,7 +6,6 @@ import javax.validation.Valid;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.HttpException;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -25,6 +24,7 @@ import net.hyerin.post.request.InsertPostDto;
 import net.hyerin.post.service.PostService;
 import net.hyerin.user.domain.User;
 import net.hyerin.user.dto.UserModifyDto;
+import net.hyerin.user.dto.UserSearchDto;
 import net.hyerin.user.dto.UserSigninDto;
 import net.hyerin.user.dto.UserSignupDto;
 import net.hyerin.user.service.UserService;
@@ -193,6 +193,29 @@ public class UserController {
         userService.deleteUser(user);
 
         return "redirect:/users/signup";
+    }
+
+    @GetMapping(value = "search")
+    public String search(UserSearchDto userSearchDto, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(auth.getName());
+
+        model.addAttribute("loginUser", user);
+
+        return "users/search";
+    }
+
+    @PostMapping(value = "search")
+    public String getSearchResult(UserSearchDto userSearchDto, Model model) {
+        List<User> users = userService.searchUsers(userSearchDto.getName());
+
+        if(CollectionUtils.isEmpty(users)) {
+            return "users/search/empty";
+        }
+
+        model.addAttribute("users", users);
+
+        return "/users/search";
     }
 
 }
