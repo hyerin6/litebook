@@ -37,7 +37,7 @@
                         <div class="main_nav tab_wrap">
                             <ul class="profile-header-tab nav nav-tabs center tab_menu_container">
                                 <li class="nav-item tab_menu_btn on"><a href="#" class="tab_menu_btn1 tab_menu_btn1 on active show">POSTS</a></li>
-                                <li class="nav-item tab_menu_btn"><a href="#" class="tab_menu_btn2">SEARCH</a></li>
+                                <li class="nav-item tab_menu_btn"><a href="/users/search" target="_self" class="tab_menu_btn5">SEARCH</a></li>
                             </ul>
                         </div>
                     </div>

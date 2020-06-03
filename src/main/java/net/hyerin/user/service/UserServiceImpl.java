@@ -2,11 +2,10 @@ package net.hyerin.user.service;
 
 import static net.hyerin.user.domain.Role.*;
 
+import java.util.List;
 import java.util.UUID;
 
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -21,7 +20,6 @@ import net.hyerin.user.repository.UserRepository;
 import net.hyerin.utils.s3.S3ServiceImpl;
 import net.hyerin.utils.security.EncryptionUtils;
 
-import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -135,21 +133,9 @@ public class UserServiceImpl implements UserService{
         userRepository.deleteById(user.getId());
     }
 
-    // @Override
-    // public List<User> getUsers(String name) {
-    //     final List<User> users = get(postId, userId);
-    //     return users;
-    // }
-    //
-    // private List<Post> get(String name, Long id) {
-    //     return id == null ?
-    //         this.postRepository.findTop5ByUser_IdOrderByStartedDateDesc(userId) :
-    //         this.postRepository.findTop5ByUser_IdAndIdLessThanOrderByIdDescStartedDateDesc(userId, id);
-    // }
-    //
-    // @Override
-    // public Long getMinIdOfPosts(Long userId){
-    //     return postRepository.findMinIdByUserId(userId);
-    // }
+    @Override
+    public List<User> searchUsers(String name) {
+        return userRepository.findByName(name);
+    }
 
 }

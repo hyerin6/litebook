@@ -6,13 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.hyerin.user.domain.Role;
-import net.hyerin.user.domain.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 // lombok annotation 설명 -> https://hyerin6.github.io/2020-04-05/0405/

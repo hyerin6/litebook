@@ -48,7 +48,7 @@
                                 <li class="nav-item tab_menu_btn"><a href="/timeline/feeds" target="_self" class="tab_menu_btn2">TIME LINE</a></li>
                                 <li class="nav-item tab_menu_btn on"><a href="/followers" target="_self" class="tab_menu_btn3 on active show">FOLLOWER</a></li>
                                 <li class="nav-item tab_menu_btn"><a href="/followings" target="_self" class="tab_menu_btn4">FOLLOWING</a></li>
-                                <li class="nav-item tab_menu_btn"><a href="#profile-search" target="_self" class="tab_menu_btn5">SEARCH</a></li>
+                                <li class="nav-item tab_menu_btn"><a href="/users/search" target="_self" class="tab_menu_btn5">SEARCH</a></li>
                             </ul>
                         </div>
                     </div>

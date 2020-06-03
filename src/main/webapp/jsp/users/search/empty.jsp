@@ -47,18 +47,36 @@
                                 <li class="nav-item tab_menu_btn"><a href="/users/profile" target="_self" class="tab_menu_btn1 tab_menu_btn1">POSTS</a></li>
                                 <li class="nav-item tab_menu_btn"><a href="/timeline/feeds" target="_self" class="tab_menu_btn2">TIME LINE</a></li>
                                 <li class="nav-item tab_menu_btn"><a href="/followers" target="_self" class="tab_menu_btn3">FOLLOWER</a></li>
-                                <li class="nav-item tab_menu_btn on"><a href="/followings" target="_self" class="tab_menu_btn4 on active show">FOLLOWING</a></li>
-                                <li class="nav-item tab_menu_btn"><a href="/users/search" target="_self" class="tab_menu_btn5">SEARCH</a></li>
+                                <li class="nav-item tab_menu_btn"><a href="/followings" target="_self" class="tab_menu_btn4">FOLLOWING</a></li>
+                                <li class="nav-item tab_menu_btn on"><a href="#profile-search" target="_self" class="tab_menu_btn5 on active show">SEARCH</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
+
+                <div style="text-align: center;">
+                    <form:form method="post" modelAttribute="userSearchDto" action="/users/search">
+                    <div class="textbox" style="padding-top: 20px; margin: auto;">
+                        <form:label path="name">Search</form:label>
+                        <form:input path="name" class="form-control" placeholder="Name" />
+                    </div>
+                </div>
+                <div class="textbox" style="padding-top: 5px; float: right">
+                    <button type="submit" class="btn-gradient blue mini">
+                        <i></i> Search
+                    </button>
+                </div>
+                </form:form>
+
                 <!-- 팔로워 리스트 : 나를 팔로우하는 사람들 -->
                 <div class="follower_container">
                     <div class="people-nearby">
                         <div class="nearby-user">
                             <div class="row followers">
-                                <h1> 아직 팔로우하는 친구들이 없네요 ;-) 검색해보세요 ! </h1>
+                                <h1>검색 결과가 없습니다. </h1>
+                            </div>
+                            <div class="row followers">
+                                <h1>다른 검색어로 검색해보세요 ! </h1>
                             </div>
                         </div>
                     </div>
