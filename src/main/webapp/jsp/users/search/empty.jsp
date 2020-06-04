@@ -27,7 +27,8 @@
                         <div class="profile-header-content">
                             <!-- 프로필 사진 -->
                             <div class="profile-header-img">
-                                <img src="${user.profile.filePath}" alt="" onerror="this.src='https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg'">
+                                <img src="${loginUser.profile == null ?
+                    'https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg' : loginUser.profile.filePath}">
                             </div>
                             <div class="profile-header-info"> <!-- 이름, 이메일 -->
                                 <h4 class="m-t-10 m-b-5"><sec:authentication property="user.name" /></h4>
@@ -48,7 +49,7 @@
                                 <li class="nav-item tab_menu_btn"><a href="/timeline/feeds" target="_self" class="tab_menu_btn2">TIME LINE</a></li>
                                 <li class="nav-item tab_menu_btn"><a href="/followers" target="_self" class="tab_menu_btn3">FOLLOWER</a></li>
                                 <li class="nav-item tab_menu_btn"><a href="/followings" target="_self" class="tab_menu_btn4">FOLLOWING</a></li>
-                                <li class="nav-item tab_menu_btn on"><a href="#profile-search" target="_self" class="tab_menu_btn5 on active show">SEARCH</a></li>
+                                <li class="nav-item tab_menu_btn on"><a href="/users/search" target="_self" class="tab_menu_btn5 on active show">SEARCH</a></li>
                             </ul>
                         </div>
                     </div>

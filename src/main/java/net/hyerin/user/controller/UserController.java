@@ -202,11 +202,16 @@ public class UserController {
 
         model.addAttribute("loginUser", user);
 
-        return "users/search";
+        return "/users/search";
     }
 
     @PostMapping(value = "search")
     public String getSearchResult(UserSearchDto userSearchDto, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(auth.getName());
+
+        model.addAttribute("loginUser", user);
+
         List<User> users = userService.searchUsers(userSearchDto.getName());
 
         if(CollectionUtils.isEmpty(users)) {
@@ -214,7 +219,6 @@ public class UserController {
         }
 
         model.addAttribute("users", users);
-
         return "/users/search";
     }
 
