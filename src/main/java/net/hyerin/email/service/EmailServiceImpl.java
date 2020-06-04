@@ -64,7 +64,7 @@ public class EmailServiceImpl implements EmailService {
     public String generateVerificationText(String email, String code){
         return "<html><body><p2>인증을 위해 아래 링크를 클릭해 주세요.</p2>" +
                 "<p>이메일 인증 후 로그인이 가능합니다.</p>" +
-                "<a href='http://http://20.41.76.24:8080/users/email/verify?email=" + email +
+                "<a href='http://20.41.76.24:8080/users/email/verify?email=" + email +
                 "&code=" + code + "' target='_blank'>" +
                 "<p>이 링크를 클릭하세요.</p></body></html>";
     }
