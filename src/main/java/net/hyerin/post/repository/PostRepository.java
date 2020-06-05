@@ -31,9 +31,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     public Long findMinIdByUserId(Long userId);
 
     @Query(nativeQuery = true,
-        value = "SELECT p.id, mainText, started_date, user_id FROM Post p WHERE user_id "
+        value = "SELECT p.id, p.mainText, p.started_date, p.user_id FROM Post p WHERE (p.user_id "
             + "IN (SELECT f.following_id FROM Follow f WHERE f.follower_id = :userId) "
-            + "OR p.user_id = :userId "
+            + "OR p.user_id = :userId) "
             + "ORDER BY p.id DESC LIMIT 5")
     public List<Post> findByFriendUserId(Long userId);
 

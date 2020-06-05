@@ -54,6 +54,7 @@ public class PostApiController {
     @PostMapping(value="/{id}/posts")
     public  @ResponseBody PostsResponse getFriendPosts(@RequestBody GetPostsRequest getPostsRequest, @PathVariable("id") Long userId) {
         List<Post> posts = postService.getFriendPosts(getPostsRequest.getLastIdOfPosts(), userId);
+
         Long lastIdOfPosts = posts.isEmpty() ?
             null : posts.get(posts.size() - 1).getId();
 
