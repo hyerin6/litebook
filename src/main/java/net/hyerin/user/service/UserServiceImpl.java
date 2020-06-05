@@ -117,7 +117,10 @@ public class UserServiceImpl implements UserService{
         }
 
         if(!userModifyDto.getProfile().isEmpty()) {
-            s3Service.deleteFile(user.getProfile());
+            if(user.getProfile() != null) {
+                s3Service.deleteFile(user.getProfile());
+            }
+
             String randomUUID = UUID.randomUUID().toString();
             String path = s3Service.userProfileUpload(userModifyDto.getProfile(), randomUUID);
             Images profile = imagesService.saveImage(path, randomUUID);
