@@ -117,7 +117,7 @@
     var lastIdOfPosts = <c:out value="${lastIdOfPosts}"/>;
     var minIdOfPosts = <c:out value="${minIdOfPosts}"/>;
     var isLoading = false;
-    var userId = <c:out value="${loginUser.id}"/>;
+    var userId = <c:out value="${user.id}"/>;
     let defaultProfile = 'https://litebook-images.s3.ap-northeast-2.amazonaws.com/litebook/profile.jpeg';
 
     $(window).scroll(function() {

@@ -55,7 +55,7 @@ public class PostApiController {
     public  @ResponseBody PostsResponse getFriendPosts(@RequestBody GetPostsRequest getPostsRequest, @PathVariable("id") Long userId) {
         List<Post> posts = postService.getFriendPosts(getPostsRequest.getLastIdOfPosts(), userId);
 
-        Long lastIdOfPosts = posts.isEmpty() ?
+        Long lastIdOfPosts = CollectionUtils.isEmpty(posts) ?
             null : posts.get(posts.size() - 1).getId();
 
         return PostsResponse.builder()

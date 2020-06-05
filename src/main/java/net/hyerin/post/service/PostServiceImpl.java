@@ -43,7 +43,7 @@ public class PostServiceImpl implements PostService {
     public List<Post> getFriendPosts(Long postId, Long userId) {
         return postId == null ?
             this.postRepository.findTop5ByUser_IdOrderByStartedDateDesc(userId) :
-            this.postRepository.findTop5ByUser_IdAndIdLessThanOrderByIdDescStartedDateDesc(postId, userId);
+            this.postRepository.findTop5ByUser_IdAndIdLessThanOrderByIdDescStartedDateDesc(userId, postId);
     }
 
     @Override

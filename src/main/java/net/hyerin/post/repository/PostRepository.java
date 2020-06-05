@@ -19,11 +19,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 //                    "ORDER BY started_date DESC LIMIT 5")
     public List<Post> findTop5ByUser_IdOrderByStartedDateDesc(Long userId);
 
-//    //최초가 아닌 경우
-//    @Query(nativeQuery = true,
-//            value = "SELECT * FROM Post " +
-//            "WHERE user_id = :userId AND id < :id " +
-//            "ORDER BY id DESC, started_date DESC LIMIT 10")
+   //최초가 아닌 경우
+   @Query(nativeQuery = true,
+           value = "SELECT * FROM Post p " +
+           "WHERE p.user_id = :userId AND p.id < :id " +
+           "ORDER BY p.id DESC LIMIT 5")
     public List<Post> findTop5ByUser_IdAndIdLessThanOrderByIdDescStartedDateDesc(Long userId, Long id);
 
     @Query(nativeQuery = true,
@@ -31,7 +31,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     public Long findMinIdByUserId(Long userId);
 
     @Query(nativeQuery = true,
-        value = "SELECT p.id, p.mainText, p.started_date, p.user_id FROM Post p WHERE (p.user_id "
+        value = "SELECT * FROM Post p WHERE (p.user_id "
             + "IN (SELECT f.following_id FROM Follow f WHERE f.follower_id = :userId) "
             + "OR p.user_id = :userId) "
             + "ORDER BY p.id DESC LIMIT 5")
