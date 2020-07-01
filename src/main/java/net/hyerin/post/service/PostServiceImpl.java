@@ -82,4 +82,9 @@ public class PostServiceImpl implements PostService {
         postRepository.deleteByIdAndUserId(postId, userId);
     }
 
+    @Override
+    public Post getPost(Long postId) {
+        return postRepository.findOneById(postId);
+    }
+
 }

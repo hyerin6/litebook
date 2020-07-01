@@ -16,4 +16,5 @@ public interface PostService {
     public void modifyPost(InsertPostDto insertPostDto, Long postId);
     public void deletePost(Long postId, Long userId);
     public List<Post> getFeeds(Long postId, Long userId);
+    public Post getPost(Long postId);
 }

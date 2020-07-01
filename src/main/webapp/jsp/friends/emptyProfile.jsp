@@ -29,6 +29,16 @@
                             </div>
                             <div class="profile-header-info">
                                 <h4 class="m-t-10 m-b-5">${user.name}</h4>
+                                <div class="timeline-likes">
+                                    <div class="stats">
+                            <span class="fa-stack fa-fw stats-icon">
+                                <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                                <i class="fa fa-heart fa-stack-1x fa-inverse t-plus-1"></i>
+                            </span>
+                                        <span class="stats-total" style="color: black"> ${likes} </span>
+                                    </div>
+                                    <br />
+                                </div>
                                 <p class="m-b-10">${user.email}</p>
                                 <a href="/users/profile" class="btn-gradient blue mini"> My Page </a>
                                 <a href="/follows/${user.id}" class="btn-gradient blue mini" style="margin-left: 5px;"> Follow </a>

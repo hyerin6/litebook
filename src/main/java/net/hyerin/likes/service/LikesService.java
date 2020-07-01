@@ -1,13 +1,19 @@
 package net.hyerin.likes.service;
 
 import net.hyerin.likes.domain.Likes;
+import net.hyerin.post.domain.Post;
+import net.hyerin.user.domain.User;
 
 public interface LikesService {
 
-	public int checkLike(Long userId, Long postId);
+	public void checkLike(User user, Post post);
 
-	public int cancelLike(Long userId, Long postId);
+	public void cancelLike(User user, Post post);
 
-	public Likes isCheck(Long userId, Long postId);
+	public void reCheckLike(User user, Post post);
+
+	public Likes isCheck(User user, Post post);
+
+	public int countLikes(Long postId);
 
 }

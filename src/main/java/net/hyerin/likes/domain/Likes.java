@@ -29,7 +29,7 @@ public class Likes {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Boolean check;
+	private Boolean checkLike;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -38,13 +38,5 @@ public class Likes {
 	@ManyToOne
 	@JoinColumn(name = "post_id", referencedColumnName = "id")
 	private Post post;
-
-	public Likes toEntity(User user, Post post) {
-		return Likes.builder()
-			.user(user)
-			.post(post)
-			.check(true)
-			.build();
-	}
 
 }
