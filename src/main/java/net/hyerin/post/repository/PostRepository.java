@@ -51,6 +51,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             + "ORDER BY p.id DESC LIMIT 5")
     public List<Post> findByIdAndFriendUserId(Long postId, Long userId);
 
-    public Long deleteByIdAndUserId(Long id, Long userId);
+    public int deleteByIdAndUserId(Long id, Long userId);
 
 }

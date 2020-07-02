@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import net.hyerin.email.service.EmailService;
+import net.hyerin.likes.domain.Likes;
+import net.hyerin.likes.service.LikesService;
 import net.hyerin.post.domain.Post;
 import net.hyerin.post.request.InsertPostDto;
 import net.hyerin.post.service.PostService;
