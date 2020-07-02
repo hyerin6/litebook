@@ -78,8 +78,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void deletePost(Long postId, Long userId) {
-        postRepository.deleteByIdAndUserId(postId, userId);
+    public int deletePost(Long postId, Long userId) {
+        return postRepository.deleteByIdAndUserId(postId, userId);
     }
 
     @Override

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.validation.BindingResult;
 
+import net.hyerin.post.domain.Post;
 import net.hyerin.user.domain.User;
 import net.hyerin.user.dto.UserModifyDto;
 import net.hyerin.user.dto.UserSignupDto;
@@ -18,4 +19,7 @@ public interface UserService {
     public User modifyProfile(UserModifyDto userModifyDto, Long userId) throws Exception;
     public void deleteUser(User user);
     public List<User> searchUsers(String name);
+    public void checkLike(User user);
+    public void cancelLike(User user);
+    public void deletePost(User user, int deleteCnt);
 }

@@ -141,4 +141,29 @@ public class UserServiceImpl implements UserService{
         return userRepository.findByName(name);
     }
 
+    @Override
+    public void checkLike(User user) {
+        User currentUser = userRepository.findById(user.getId()).get();
+        int cnt = user.getLikeCnt()+1;
+        currentUser.setLikeCnt(cnt);
+        userRepository.save(currentUser);
+    }
+
+    @Override
+    public void cancelLike(User user) {
+        User currentUser = userRepository.findById(user.getId()).get();
+        int cnt = user.getLikeCnt()-1;
+        currentUser.setLikeCnt(cnt);
+        userRepository.save(currentUser);
+    }
+
+    @Override
+    @Transactional
+    public void deletePost(User user, int deleteCnt) {
+        User currentUser = userRepository.findById(user.getId()).get();
+        int cnt = user.getLikeCnt()-deleteCnt;
+        currentUser.setLikeCnt(cnt);
+        userRepository.save(currentUser);
+    }
+
 }

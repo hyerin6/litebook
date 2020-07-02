@@ -47,8 +47,10 @@ public class LikesServiceImpl implements LikesService {
 	}
 
 	@Override
-	public int countLikes(Long postId) {
-		return likesRepository.findByLikes(postId);
+	@Transactional
+	public void deletePost(Long postId) {
+		likesRepository.deleteByPostId(postId);
 	}
+
 
 }

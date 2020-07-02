@@ -35,7 +35,7 @@
                                 <i class="fa fa-circle fa-stack-2x text-danger"></i>
                                 <i class="fa fa-heart fa-stack-1x fa-inverse t-plus-1"></i>
                             </span>
-                        <span class="stats-total" style="color: black"> ${likes} </span>
+                        <span class="stats-total" style="color: black"> ${user.likeCnt} </span>
                     </div>
                     <br />
                 </div>
@@ -78,13 +78,13 @@
                                     </div>
                                     <div class="timeline-likes">
                                         <div class="stats">
-                                            <a href="#">
+                                            <a href="/likes/${post.id}">
                                         <span class="fa-stack fa-fw stats-icon">
                                             <i class="fa fa-circle fa-stack-2x text-danger"></i>
                                             <i class="fa fa-heart fa-stack-1x fa-inverse t-plus-1"></i>
                                         </span>
                                             </a>
-                                            <span class="stats-total">4.3k</span>
+                                            <span class="stats-total">Like</span>
                                         </div>
                                     </div>
                                     <div class="timeline-footer">
@@ -180,13 +180,13 @@
                                         "</div>\n" +
                                         "<div class=\"timeline-likes\">\n" +
                                         "<div class=\"stats\">\n" +
-                                        "<a href=\"#\">\n" +
+                                        "<a href=\"/likes/" + data.posts[i].id + "\">\n" +
                                         "<span class=\"fa-stack fa-fw stats-icon\">\n" +
                                         "<i class=\"fa fa-circle fa-stack-2x text-danger\"></i>\n" +
                                         "<i class=\"fa fa-heart fa-stack-1x fa-inverse t-plus-1\"></i>\n" +
                                         "</span>\n" +
                                         "</a>\n" +
-                                        "<span class=\"stats-total\">4.3k</span>\n" +
+                                        "<span class=\"stats-total\">Like</span>\n" +
                                         "</div>\n" +
                                         "</div>\n" +
                                         "<div class=\"timeline-footer\">\n" +

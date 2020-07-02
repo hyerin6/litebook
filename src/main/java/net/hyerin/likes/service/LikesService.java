@@ -14,6 +14,6 @@ public interface LikesService {
 
 	public Likes isCheck(User user, Post post);
 
-	public int countLikes(Long postId);
+	public void deletePost(Long postId);
 
 }

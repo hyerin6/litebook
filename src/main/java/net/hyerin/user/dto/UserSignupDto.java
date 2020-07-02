@@ -48,6 +48,7 @@ public class UserSignupDto {
                 .phone(phone)
                 .userType(Role.ROLE_RESTRICTED)
                 .enabled(false)
+                .likeCnt(0)
                 .build();
     }
 

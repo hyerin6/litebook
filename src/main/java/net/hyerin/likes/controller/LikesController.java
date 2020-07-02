@@ -39,17 +39,17 @@ public class LikesController {
 		Likes likes = likesService.isCheck(user, post);
 
 		if(likes == null) {
-			log.info("한번도 누른적없음");
 			likesService.checkLike(user, post);
+			userService.checkLike(post.getUser());
 		} else if (likes.getCheckLike()) {
-			log.info("좋아요 취소할거임");
 			likesService.cancelLike(user, post);
+			userService.cancelLike(post.getUser());
 		} else {
-			log.info("좋아요 누를거임");
 			likesService.reCheckLike(user, post);
+			userService.checkLike(post.getUser());
 		}
 
-		return "redirect:/users/profile";
+		return "redirect:/users/" + post.getUser().getId();
 	}
 
 }

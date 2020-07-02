@@ -44,14 +44,11 @@ public class UserController {
 
     private PostService postService;
 
-    private LikesService likesService;
-
     public UserController(UserService userService, EmailService emailService,
-                          PostService postService, LikesService likesService) {
+                          PostService postService) {
         this.userService = userService;
         this.emailService = emailService;
         this.postService = postService;
-        this.likesService = likesService;
     }
 
     @GetMapping(value="signup")
@@ -130,13 +127,6 @@ public class UserController {
         Long lastIdOfPosts = posts.isEmpty() ?
             null : posts.get(posts.size() - 1).getId();
 
-
-        int sum = 0;
-        for(Post p : posts) {
-            sum += likesService.countLikes(p.getId());
-        }
-        model.addAttribute("likes", sum);
-
         model.addAttribute("insertPostDto", new InsertPostDto());
         model.addAttribute("posts", posts);
         model.addAttribute("lastIdOfPosts", lastIdOfPosts);
@@ -172,12 +162,6 @@ public class UserController {
         model.addAttribute("posts", posts);
         model.addAttribute("lastIdOfPosts", lastIdOfPosts);
         model.addAttribute("minIdOfPosts", postService.getMinIdOfPosts(id).getMinIdOfPosts());
-
-        int sum = 0;
-        for(Post p : posts) {
-            sum += likesService.countLikes(p.getId());
-        }
-        model.addAttribute("likes", sum);
 
         return "friends/profile";
     }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import net.hyerin.likes.service.LikesService;
 import net.hyerin.post.domain.Post;
 import net.hyerin.post.request.InsertPostDto;
 import net.hyerin.post.service.PostService;
@@ -28,9 +29,12 @@ public class PostController {
 
     private UserService userService;
 
-    public PostController(PostService postService, UserService userService){
+    private LikesService likesService;
+
+    public PostController(PostService postService, UserService userService, LikesService likesService){
         this.postService = postService;
         this.userService = userService;
+        this.likesService = likesService;
     }
 
     @PostMapping(value="/posts")
@@ -48,8 +52,9 @@ public class PostController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(auth.getName());
 
-        postService.deletePost(postId, user.getId());
-
+        likesService.deletePost(postId);
+        int deleteCnt = postService.deletePost(postId, user.getId());
+        userService.deletePost(user, deleteCnt);
         return "redirect:/users/profile";
     }
 

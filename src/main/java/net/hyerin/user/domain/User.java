@@ -44,4 +44,6 @@ public class User implements Serializable {
 
     private boolean enabled;
 
+    private int likeCnt;
+
 }

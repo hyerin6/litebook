@@ -16,4 +16,6 @@ public interface LikesRepository extends JpaRepository<Likes, Long> {
 	@Query("SELECT COUNT(l) FROM Likes l WHERE l.checkLike = true AND l.post.id = :postId")
 	public int findByLikes(Long postId);
 
+	public void deleteByPostId(Long postId);
+
 }
