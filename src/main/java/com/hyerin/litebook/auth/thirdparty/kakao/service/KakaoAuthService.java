@@ -39,7 +39,7 @@ public class KakaoAuthService implements SocialAuthService<SignUpRequest, SignIn
 			.name(kakaoProfile.getKakaoAccount().getProfile().getNickname())
 			.profile(kakaoProfile.getKakaoAccount().getProfile().getProfileImageUrl())
 			.build();
-
+		
 		userService.signUp(user);
 	}
 
