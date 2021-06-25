@@ -36,6 +36,7 @@ public class AuthController {
 		} catch (Exception e) {
 			return BAD_REQUEST;
 		}
+		
 		return OK;
 	}
 
