@@ -4,7 +4,18 @@ Social Network Service (Timeline)
 친구와 가족, 같은 관심사를 가진 사람들과 소통할 수 있는     
 좋아하는 컨텐츠 업로더를 구독하거나 나의 이야기를 공유할 수 있는 서비스입니다.     
 
-<br />   
+<br />       
+
+해당 프로젝트는 2020-NAVER-CAMPUS-HACKDAY와 같은 주제로 비슷한 기능, 기술로 구현되었고       
+<https://github.com/hyerin6/HACKDAY>에서 확인할 수 있습니다.      
+
+<br />        
+
+프로젝트 목적은 학습으로 SNS 프로젝트는 백엔드에 더 집중하기 위해     
+앞으로는 <https://github.com/Coding-Hogwarts/sns> 여기서 더 develop 합니다!          
+
+
+<br />        
 
 ### 프로젝트 진행 과정   
 - 블로그 포스팅   
@@ -20,7 +31,7 @@ Social Network Service (Timeline)
   + Naming, spring 표준 권한 : <https://hyerin6.github.io/2020-04-03/0403/>   
 <br />     
   
-- DB 설계 과정 보러가기 : [wiki](https://github.com/hyerin6/litebook/wiki/DB-%EC%84%A4%EA%B3%84)      
+- DB 설계 과정 보러가기 : [wiki](https://github.com/hyerin6/litebook/wiki/%5BWEB%5D-Entity-Relation-Model)          
 
 <br />   
 
