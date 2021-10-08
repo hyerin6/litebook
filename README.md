@@ -12,7 +12,7 @@ Social Network Service (Timeline)
 <br />        
 
 프로젝트 목적은 학습으로 SNS 프로젝트는 백엔드에 더 집중하기 위해     
-앞으로는 <https://github.com/Coding-Hogwarts/sns> 여기서 더 develop 합니다!          
+앞으로는 <https://github.com/hyerin6/SNS> 여기서 더 develop 합니다!          
 
 
 <br />        
